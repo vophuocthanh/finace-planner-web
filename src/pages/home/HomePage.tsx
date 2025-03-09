@@ -1,5 +1,4 @@
-import { Header } from '@/components'
-import { BackgroundBeamsBanner } from '@/components/background-beams-demo/background-beams-banner'
+import { BackgroundBeamsBanner, Header, WorldMapSection } from '@/components'
 
 const HomePage = () => {
   return (
@@ -8,6 +7,7 @@ const HomePage = () => {
       <div className='relative z-10'>
         <Header />
         <BackgroundBeamsBanner />
+        <WorldMapSection />
       </div>
     </div>
   )

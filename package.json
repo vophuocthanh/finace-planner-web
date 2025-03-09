@@ -36,6 +36,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "dotted-map": "^2.2.3",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
     "framer-motion": "^12.4.2",

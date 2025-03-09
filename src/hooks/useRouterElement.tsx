@@ -39,9 +39,9 @@ export default function useRoutesElements() {
     <AnimatePresence mode='wait'>
       <motion.div
         key={location.key}
-        initial={{ opacity: 0, x: isAuthPath ? 20 : 0 }}
+        initial={{ opacity: 0, x: isAuthPath ? 10 : 0 }}
         animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: isAuthPath ? -20 : 0 }}
+        exit={{ opacity: 0, x: isAuthPath ? -10 : 0 }}
         transition={{ duration: 0.3 }}
         style={{ position: isAuthPath ? 'absolute' : 'relative', width: '100%' }}
       >
