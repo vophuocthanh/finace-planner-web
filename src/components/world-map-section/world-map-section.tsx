@@ -6,7 +6,7 @@ const textWords = 'Nothing you don’t'
 
 export function WorldMapSection() {
   return (
-    <div className='w-full py-40 bg-white dark:bg-black'>
+    <div className='w-full py-40'>
       <div className='mx-auto text-center max-w-7xl'>
         <p className='text-xl font-bold text-black md:text-4xl dark:text-white'>
           Everything you need.{' '}
