@@ -7,16 +7,16 @@ export default function Header() {
       <img src={logo} alt='' />
       <div className='flex justify-center items-center gap-6 px-6 py-4 rounded-lg box-shadow bg-[#FFFFFF]'>
         <Link to='/' className='text-[#8987A1]'>
-          Home
+          Products
         </Link>
         <Link to='/' className='text-[#8987A1]'>
-          About
+          Solutions
         </Link>
         <Link to='/' className='text-[#8987A1]'>
-          Howw it Works
+          Developers
         </Link>
         <Link to='/' className='text-[#8987A1]'>
-          Service
+          Pricing
         </Link>
       </div>
       <div className='flex items-center gap-10'>
