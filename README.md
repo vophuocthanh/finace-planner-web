@@ -1,4 +1,4 @@
-<h1 align="center">React Boilerplate The Best 2025 🚀🔥🦖</h1>
+<h1 align="center">Finance Planner 💰💸</h1>
 
   <br />
 
