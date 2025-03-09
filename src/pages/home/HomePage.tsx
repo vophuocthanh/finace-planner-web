@@ -1,4 +1,4 @@
-import { BackgroundBeamsBanner, Header, WorldMapSection } from '@/components'
+import { BackgroundBeamsBanner, Footer, Header, WorldMapSection } from '@/components'
 
 const HomePage = () => {
   return (
@@ -8,6 +8,7 @@ const HomePage = () => {
         <Header />
         <BackgroundBeamsBanner />
         <WorldMapSection />
+        <Footer />
       </div>
     </div>
   )
