@@ -1,5 +1,5 @@
 import { IconEye, IconNonEye } from '@/assets/icons'
-import { logo } from '@/assets/images'
+// import { logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -21,6 +21,8 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
+import FacebookIcons1 from '@/assets/icons/facebook1.png'
+import GoogleIcons from '@/assets/icons/google.png'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -76,12 +78,12 @@ export default function Login() {
   }, [form, rememberMe])
 
   return (
-    <div className='flex justify-center w-full h-screen'>
-      <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem]'>
-        <div className='flex flex-col w-full ml-32 space-y-2'>
-          <Link to={path.home} className='w-52'>
-            <img src={logo} alt='logo' className='w-full h-16 mb-10' />
-          </Link>
+    <div className='flex justify-center w-full h-screen overflow-hidden '>
+      <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] mb-[10rem] ml-[10rem]'>
+        <div className='flex flex-col w-full ml-32 space-y-2 mt-[4rem]'>
+          {/* <Link to={path.home} className='w-52'>
+            <img src={logo} alt='logo' className='w-full h-10 mb-10' />
+          </Link> */}
           <h1 className='text-5xl font-semibold'>Login</h1>
           <p className='text-sm text-[#112211]'>Login to access your account</p>
           <Form {...form}>
@@ -143,6 +145,29 @@ export default function Login() {
               >
                 Login
               </Button>
+
+              <div className='flex items-center'>
+                <div className='flex-1 border-t border-gray-400'></div>
+                <span className='px-3 font-medium text-gray-600'>or</span>
+                <div className='flex-1 border-t border-gray-400'></div>
+              </div>
+
+              <Button
+                loading={isLoading}
+                className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'
+                type='submit'
+              >
+                <img src={GoogleIcons} alt='Facebook' className='w-8 h-8 p-1 rounded-full' />
+                Sign in with Google
+              </Button>
+              <Button
+                loading={isLoading}
+                className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'
+                type='submit'
+              >
+                <img src={FacebookIcons1} alt='Facebook' className='w-8 h-8 p-1 rounded-full' />
+                Sign in with Facebook
+              </Button>
               <p className='flex items-center justify-center'>
                 Don’t have an account?&nbsp;
                 <Link to='/register' className='cursor-pointer text-redCustom hover:underline'>
@@ -153,11 +178,11 @@ export default function Login() {
           </Form>
         </div>
       </div>
-      <div className='w-full'>
+      <div className='w-full pr-[8rem] '>
         <img
           src='https://livewallp.com/wp-content/uploads/2020/12/Whale-and-sea.jpg'
           alt=''
-          className='rounded-lg w-[50rem] h-[50rem] object-cover my-20'
+          className='rounded-lg w-[35rem] h-[41.5rem] object-cover my-10 '
         />
       </div>
     </div>
