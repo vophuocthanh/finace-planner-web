@@ -1,11 +1,5 @@
 import config from '@/configs'
-import {
-  getAccessTokenFromLS,
-  getRefreshTokenFromLS,
-  removeAccessTokenFromLS,
-  setAccessTokenToLS,
-  setRefreshTokenToLS
-} from '@/core/shared/storage'
+import { getAccessTokenFromLS, removeAccessTokenFromLS } from '@/core/shared/storage'
 import axios, { HttpStatusCode } from 'axios'
 import { isEqual } from 'lodash'
 
@@ -39,24 +33,6 @@ axiosClient.interceptors.response.use(
     const originalRequest = error.config
     if (error.response && isEqual(error.response.status, HttpStatusCode.Unauthorized) && !originalRequest._retry) {
       originalRequest._retry = true
-
-      try {
-        const refreshToken = getRefreshTokenFromLS()
-        const response = await axios.post(`${config.baseUrl}/auth/refresh-token`, {
-          refresh_token: refreshToken
-        })
-
-        if (isEqual(response.status, HttpStatusCode.Ok)) {
-          const { access_token, refresh_token } = response.data
-          setAccessTokenToLS(access_token)
-          setRefreshTokenToLS(refresh_token)
-          axios.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
-          return axiosClient(originalRequest)
-        }
-      } catch (refreshError) {
-        removeAccessTokenFromLS()
-        return Promise.reject(refreshError)
-      }
     } else if (error.response && isEqual(error.response.status, HttpStatusCode.Unauthorized)) {
       removeAccessTokenFromLS()
     }

@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { PASSWORD_TYPE, ROLE_ADMIN, ROLE_EMPLOYEE, TEXT_TYPE } from '@/configs/consts'
 import { REMEMBER_ME } from '@/core/configs/const'
 import { path } from '@/core/constants/path'
+import { handleError } from '@/core/helpers/error-handler'
 import { mutationKeys } from '@/core/helpers/key-tanstack'
 import { authApi } from '@/core/services/auth.service'
 import { setAccessTokenToLS, setRefreshTokenToLS, setUserToLS } from '@/core/shared/storage'
@@ -51,9 +52,7 @@ export default function Login() {
         navigate(isEqual(user.role, ROLE_ADMIN) || isEqual(user.role, ROLE_EMPLOYEE) ? path.admin.dashboard : path.home)
         toast.success('Login success 🚀🚀⚡⚡!')
       },
-      onError: () => {
-        toast.error('Login failed!')
-      },
+      onError: (error: Error) => handleError({ error }),
       onSettled: () => {
         setIsLoading(false)
       }
@@ -79,7 +78,7 @@ export default function Login() {
   return (
     <div className='flex justify-center w-full h-screen'>
       <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem]'>
-        <div className='flex flex-col w-full space-y-2 ml-32'>
+        <div className='flex flex-col w-full ml-32 space-y-2'>
           <Link to={path.home} className='w-52'>
             <img src={logo} alt='logo' className='w-full h-16 mb-10' />
           </Link>
