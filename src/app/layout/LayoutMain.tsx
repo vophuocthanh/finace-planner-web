@@ -11,13 +11,16 @@ const LayoutMain = ({ children }: ILayoutMainProps) => {
       <div className='flex flex-1 overflow-hidden'>
         <Sidebar />
         <main className='flex-1 overflow-auto bg-[#F4F4F4]'>
-          <div className='w-full h-16 bg-[#FCFCFC] flex justify-end items-center px-4'>
-            <Avatar>
-              <AvatarImage src='https://github.com/shadcn.png' alt='@shadcn' />
+          <div className='w-full h-16 bg-[#FCFCFC]  px-4 fixed z-50  '>
+            <Avatar className='absolute top-4 left-[97rem]'>
+              <AvatarImage
+                src='https://thuthuatnhanh.com/wp-content/uploads/2022/04/Hinh-nen-Songoku-4K-dep-nhat.jpg'
+                alt='@shadcn'
+              />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
-          <div className='flex-1 px-2 py-2'>{children}</div>
+          <div className='flex-1 px-2 py-2 mt-16'>{children}</div>
         </main>
       </div>
     </div>
