@@ -7,6 +7,7 @@ export const path = {
   register: '/register',
   forgotPassword: '/forgot-password',
   blog: '/blog',
+  profile: '/profile',
 
   // Admin routes
   admin: {
