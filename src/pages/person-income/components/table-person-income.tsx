@@ -14,7 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { STANDARD_DATE_FORMAT_SLASH } from '@/configs/consts'
 import { formatDate } from '@/core/helpers/date-time'
 import { formatNumber } from '@/core/helpers/number'
-import { usePersonIncome } from '@/hooks/person-income/usePersonIncome'
+import { usePersonIncome } from '@/hooks/person-income/usePersonIncomeQuery'
 import {
   CategoryPersonIncomeResponse,
   MonthlyPersonIncomeResponse,

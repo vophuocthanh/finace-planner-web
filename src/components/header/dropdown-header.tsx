@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { path } from '@/core/constants/path'
 import { clearLS } from '@/core/shared/storage'
-import { useGetMe } from '@/hooks/me/useGetMe'
+import { useGetMe } from '@/hooks/me/useGetMeQuery'
 import { CreditCard, LogOut, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
