@@ -1,3 +1,4 @@
+import { LoadingCM } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -13,7 +14,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { STANDARD_DATE_FORMAT_SLASH } from '@/configs/consts'
 import { formatDate } from '@/core/helpers/date-time'
 import { formatNumber } from '@/core/helpers/number'
-import { PersonIncomeResponse } from '@/models/interface/person-income.interface'
+import { usePersonIncome } from '@/hooks/person-income/usePersonIncome'
+import {
+  CategoryPersonIncomeResponse,
+  MonthlyPersonIncomeResponse,
+  PersonIncomeResponse
+} from '@/models/interface/person-income.interface'
+import ModalAddPersonIncome from '@/pages/person-income/components/modal-add-person-income'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -29,88 +36,7 @@ import {
 import { debounce } from 'lodash'
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const columns: ColumnDef<PersonIncomeResponse>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
-  },
-  {
-    accessorKey: 'description',
-    header: 'Description',
-    cell: memo(
-      ({ row }) => <div className='capitalize'>{row.getValue('description')}</div>,
-      (prev, next) => prev.row.getValue('description') === next.row.getValue('description')
-    )
-  },
-  {
-    accessorKey: 'amount',
-    header: () => <div>Amount</div>,
-    cell: memo(
-      ({ row }) => {
-        const amount = parseFloat(row.getValue('amount'))
-        return <div className='font-medium'>{formatNumber(amount)}</div>
-      },
-      (prev, next) => prev.row.getValue('amount') === next.row.getValue('amount')
-    )
-  },
-  {
-    accessorKey: 'createAt',
-    header: ({ column }) => (
-      <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-        CreateAt
-        <ArrowUpDown />
-      </Button>
-    ),
-    cell: memo(
-      ({ row }) => {
-        const createAt = row.getValue('createAt') as string | Date
-        return <div className='lowercase'>{formatDate(createAt, STANDARD_DATE_FORMAT_SLASH)}</div>
-      },
-      (prev, next) => prev.row.getValue('createAt') === next.row.getValue('createAt')
-    )
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='w-8 h-8 p-0'>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id ?? '')}>
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    }
-  }
-]
+import { VND_CURRENCY_UNIT } from '../../../configs/consts'
 
 export default function TablePersonIncome() {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -118,6 +44,29 @@ export default function TablePersonIncome() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const [filterValue, setFilterValue] = useState<string>('')
+  const [openModalAddPersonIncome, setOpenModalAddPersonIncome] = useState<boolean>(false)
+  const [editPersonIncomeData, setEditPersonIncomeData] = useState<PersonIncomeResponse | undefined>(undefined)
+
+  const handleEditPersonIncome = (paymentId: string) => {
+    const selectedIncome = personIncome?.data.find((item) => item.id === paymentId)
+    setEditPersonIncomeData(selectedIncome)
+    setOpenModalAddPersonIncome(true)
+  }
+
+  const handleOpenModalAddPersonIncome = (open: boolean) => {
+    setOpenModalAddPersonIncome(open)
+
+    if (!open) {
+      setEditPersonIncomeData(undefined)
+    }
+  }
+
+  const handleAddButtonClick = () => {
+    setEditPersonIncomeData(undefined)
+    setOpenModalAddPersonIncome(true)
+  }
+
+  const { data: personIncome, isLoading, error } = usePersonIncome()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilter = useCallback(
@@ -127,8 +76,121 @@ export default function TablePersonIncome() {
     []
   )
 
-  const data = useMemo(() => [], [])
-  const memoizedColumns = useMemo(() => columns, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const columns: ColumnDef<PersonIncomeResponse>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label='Select all'
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label='Select row'
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false
+    },
+    {
+      accessorKey: 'description',
+      header: 'Mô tả',
+      cell: memo(
+        ({ row }) => <div className='capitalize'>{row.getValue('description')}</div>,
+        (prev, next) => prev.row.getValue('description') === next.row.getValue('description')
+      )
+    },
+    {
+      accessorKey: 'amount',
+      header: () => <div>Tiền</div>,
+      cell: memo(
+        ({ row }) => {
+          const amount = parseFloat(row.getValue('amount'))
+          return (
+            <div className='font-medium'>
+              {formatNumber(amount)} {VND_CURRENCY_UNIT}
+            </div>
+          )
+        },
+        (prev, next) => prev.row.getValue('amount') === next.row.getValue('amount')
+      )
+    },
+    {
+      accessorKey: 'createAt',
+      header: ({ column }) => (
+        <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Ngày viết
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: memo(
+        ({ row }) => {
+          const createAt = row.getValue('createAt') as string | Date
+          return <div className='lowercase'>{formatDate(createAt, STANDARD_DATE_FORMAT_SLASH)}</div>
+        },
+        (prev, next) => prev.row.getValue('createAt') === next.row.getValue('createAt')
+      )
+    },
+
+    {
+      accessorKey: 'category',
+      header: () => <div>Danh mục</div>,
+      cell: memo(
+        ({ row }) => {
+          const category = row.getValue('category') as CategoryPersonIncomeResponse
+          return <div className='font-medium'>{category?.name}</div>
+        },
+        (prev, next) => prev.row.getValue('category') === next.row.getValue('category')
+      )
+    },
+    {
+      accessorKey: 'monthly',
+      header: () => <div>Tháng</div>,
+      cell: memo(
+        ({ row }) => {
+          const monthly = row.getValue('monthly') as MonthlyPersonIncomeResponse
+          return (
+            <div className='font-medium'>
+              {monthly?.nameMonth} - {monthly?.yearly?.year}
+            </div>
+          )
+        },
+        (prev, next) => prev.row.getValue('monthly') === next.row.getValue('monthly')
+      )
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        const payment = row.original
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' className='w-8 h-8 p-0'>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id ?? '')}>
+                Copy payment ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => handleEditPersonIncome(payment.id ?? '')}>Sửa thu nhập</DropdownMenuItem>
+              <DropdownMenuItem>View payment details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      }
+    }
+  ]
+
+  const data = useMemo(() => personIncome?.data ?? [], [personIncome?.data])
+  const memoizedColumns = useMemo(() => columns, [columns])
 
   const table = useReactTable({
     data,
@@ -151,11 +213,14 @@ export default function TablePersonIncome() {
 
   const visibleColumns = useMemo(() => table.getAllColumns().filter((column) => column.getCanHide()), [table])
 
+  if (isLoading) return <LoadingCM />
+  if (error) return <div className='flex items-center justify-center h-screen'>Error: {error.message}</div>
+
   return (
     <div className='w-full p-4 bg-white rounded-md shadow-md'>
       <div className='flex items-center justify-between gap-2 py-4'>
         <Input
-          placeholder='Filter description...'
+          placeholder='Tìm kiếm theo mô tả...'
           value={filterValue}
           onChange={(event) => {
             setFilterValue(event.target.value)
@@ -166,6 +231,7 @@ export default function TablePersonIncome() {
         <div className='flex items-center gap-2'>
           <Button
             iconLeft={<Plus />}
+            onClick={handleAddButtonClick}
             variant='outline'
             className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width hover:shadow-md hover:shadow-primary/50'
           >
@@ -177,7 +243,7 @@ export default function TablePersonIncome() {
                 variant='outline'
                 className='ml-auto border-primary text-primary hover:text-white hover:bg-primary'
               >
-                Columns <ChevronDown />
+                Cột <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
@@ -246,6 +312,16 @@ export default function TablePersonIncome() {
           </Button>
         </div>
       </div>
+
+      {openModalAddPersonIncome && (
+        <ModalAddPersonIncome
+          open={openModalAddPersonIncome}
+          onOpenChange={handleOpenModalAddPersonIncome}
+          personIncomeData={editPersonIncomeData}
+          isEditMode={!!editPersonIncomeData}
+          id={editPersonIncomeData ? editPersonIncomeData.id : undefined}
+        />
+      )}
     </div>
   )
 }

@@ -6,7 +6,7 @@ import { PersonIncomeRequest, PersonIncomeResponse } from '@/models/interface/pe
 const API_PERSON_INCOME_URL = '/personal-incomes'
 
 export const personIncomeApi = {
-  getPersonIncomes(params: FilterParams): Promise<ListResponse<PersonIncomeResponse>> {
+  getPersonIncomes(params?: FilterParams): Promise<ListResponse<PersonIncomeResponse>> {
     return axiosClient.get(API_PERSON_INCOME_URL, { params })
   },
   getPersonIncomeById(id: string): Promise<PersonIncomeResponse> {
