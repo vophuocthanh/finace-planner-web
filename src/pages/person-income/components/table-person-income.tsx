@@ -27,7 +27,7 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import { debounce } from 'lodash'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -149,12 +149,11 @@ export default function TablePersonIncome() {
     }
   })
 
-  // Memoize danh sách cột có thể ẩn
   const visibleColumns = useMemo(() => table.getAllColumns().filter((column) => column.getCanHide()), [table])
 
   return (
     <div className='w-full p-4 bg-white rounded-md shadow-md'>
-      <div className='flex items-center py-4'>
+      <div className='flex items-center justify-between gap-2 py-4'>
         <Input
           placeholder='Filter description...'
           value={filterValue}
@@ -164,25 +163,37 @@ export default function TablePersonIncome() {
           }}
           className='max-w-sm'
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='ml-auto'>
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            {visibleColumns.map((column) => (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                className='capitalize'
-                checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+        <div className='flex items-center gap-2'>
+          <Button
+            iconLeft={<Plus />}
+            variant='outline'
+            className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width'
+          >
+            Thêm thu nhập cá nhân
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='outline'
+                className='ml-auto border-primary text-primary hover:text-white hover:bg-primary'
               >
-                {column.id}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+                Columns <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {visibleColumns.map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className='capitalize'
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className='border rounded-md'>
         <Table>
