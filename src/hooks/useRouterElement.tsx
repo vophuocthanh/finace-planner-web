@@ -8,6 +8,10 @@ import Dashboard from '@/pages/dashboard/Dashboard'
 import PageNotFound from '@/pages/404/PageNotFound'
 import { path } from '@/core/constants/path'
 import { AnimatePresence, motion } from 'framer-motion'
+import PersonIncome from '@/pages/person-income/PersonIncome'
+import PersonExpense from '@/pages/person-expense/PersonExpense'
+import PersonSaving from '@/pages/person-saving/PersonSaving'
+import ManagerUser from '@/pages/manager-user/ManagerUser'
 
 interface RouteConfig {
   path: string
@@ -29,6 +33,38 @@ export default function useRoutesElements() {
         </LayoutMain>
       )
     },
+    {
+      path: path.admin.personIncome,
+      element: (
+        <LayoutMain>
+          <PersonIncome />
+        </LayoutMain>
+      )
+    },
+    {
+      path: path.admin.expense,
+      element: (
+        <LayoutMain>
+          <PersonExpense />
+        </LayoutMain>
+      )
+    },
+    {
+      path: path.admin.saving,
+      element: (
+        <LayoutMain>
+          <PersonSaving />
+        </LayoutMain>
+      )
+    },
+    {
+      path: path.admin.manageUser,
+      element: (
+        <LayoutMain>
+          <ManagerUser />
+        </LayoutMain>
+      )
+    },
     { path: '*', element: <PageNotFound /> }
   ]
 
@@ -36,17 +72,23 @@ export default function useRoutesElements() {
   const isAuthPath = [path.login, path.register].includes(location.pathname)
 
   return (
-    <AnimatePresence mode='wait'>
-      <motion.div
-        key={location.key}
-        initial={{ opacity: 0, x: isAuthPath ? 10 : 0 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: isAuthPath ? -10 : 0 }}
-        transition={{ duration: 0.3 }}
-        style={{ position: isAuthPath ? 'absolute' : 'relative', width: '100%' }}
-      >
-        {routeElements}
-      </motion.div>
-    </AnimatePresence>
+    <>
+      {isAuthPath ? (
+        <AnimatePresence mode='wait'>
+          <motion.div
+            key={location.key}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.3 }}
+            style={{ position: 'absolute', width: '100%' }}
+          >
+            {routeElements}
+          </motion.div>
+        </AnimatePresence>
+      ) : (
+        <div key={location.key}>{routeElements}</div>
+      )}
+    </>
   )
 }
