@@ -1,5 +1,4 @@
 import { IconEye, IconNonEye } from '@/assets/icons'
-// import { logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -81,9 +80,6 @@ export default function Login() {
     <div className='flex justify-center w-full h-screen overflow-hidden '>
       <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] mb-[10rem] ml-[10rem]'>
         <div className='flex flex-col w-full ml-32 space-y-2 mt-[4rem]'>
-          {/* <Link to={path.home} className='w-52'>
-            <img src={logo} alt='logo' className='w-full h-10 mb-10' />
-          </Link> */}
           <h1 className='text-5xl font-semibold'>Login</h1>
           <p className='text-sm text-[#112211]'>Login to access your account</p>
           <Form {...form}>

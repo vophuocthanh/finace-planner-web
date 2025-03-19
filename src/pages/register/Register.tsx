@@ -1,5 +1,4 @@
 import { IconEye, IconNonEye } from '@/assets/icons'
-// import { logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -69,9 +68,6 @@ export default function Register() {
       </div>
       <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] ml-80 mr-[8rem] '>
         <div className='flex flex-col w-full space-y-2'>
-          {/* <Link to={path.home} className='w-56'>
-            <img src={logo} alt='logo' className='w-full h-12 mb-10' />
-          </Link> */}
           <h1 className='text-5xl font-semibold'>Register</h1>
           <p className='text-sm text-[#112211]'>Let’s get you all st up so you can access your personal account.</p>
           <Form {...form}>
