@@ -21,13 +21,18 @@ const SidebarLink = ({ link, isActive, isCollapsed }: ISidebarLinkProps) => {
       className={classNames(
         'flex items-center gap-4 font-medium text-base rounded-xl py-4 transition-all duration-300 group',
         { 'justify-center px-0': isCollapsed, 'px-6': !isCollapsed },
-        { 'bg-primary text-white': isActive, 'hover:text-primary': !isActive }
+        { 'bg-primary text-white': isActive, 'hover:text-primary': !isActive },
+        'md:flex-row md:gap-4',
+        'flex-col gap-1 px-0 justify-center'
       )}
     >
       <span className={classNames('transition-all duration-300 group-hover:text-primary', { 'svg-animate': isActive })}>
-        {link.icon && React.cloneElement(link.icon, { color: isActive ? '#fff' : 'currentColor' })}
+        {link.icon &&
+          React.cloneElement(link.icon, {
+            color: isActive ? '#fff' : 'currentColor'
+          })}
       </span>
-      {!isCollapsed && <span>{link.title}</span>}
+      {!isCollapsed && <span className='hidden md:inline'>{link.title}</span>}
     </Link>
   )
 }
@@ -43,8 +48,18 @@ const Sidebar = () => {
   const { sidebarOpen, toggleSidebar } = useToggleSideBar()
 
   return (
-    <div className={`px-4 py-4 bg-[#FCFCFC] ${sidebarOpen ? 'w-20' : 'w-64'} transition-width duration-300`}>
-      <div className='flex items-center gap-2 mb-5'>
+    <div
+      className={classNames(
+        'px-4 py-4 bg-[#FCFCFC]',
+        // Desktop styles
+        sidebarOpen ? 'md:w-20' : 'md:w-64',
+        'md:h-full md:flex md:flex-col md:static',
+        'transition-width duration-300',
+        // Mobile styles
+        'fixed bottom-0 left-0 right-0 h-20 flex w-full'
+      )}
+    >
+      <div className={classNames('flex items-center gap-2 mb-5', 'hidden md:flex')}>
         <Logo isCollapsed={sidebarOpen} />
         <button onClick={toggleSidebar} className={`ml-auto ${sidebarOpen ? 'mr-2' : ''}`}>
           {sidebarOpen ? (
@@ -54,7 +69,7 @@ const Sidebar = () => {
           )}
         </button>
       </div>
-      <div>
+      <div className={classNames('flex md:flex-col', 'justify-around md:justify-start w-full')}>
         {sidebarLinks.map((link) => (
           <SidebarLink
             key={link.title}

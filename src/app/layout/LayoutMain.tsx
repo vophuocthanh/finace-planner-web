@@ -12,7 +12,7 @@ const LayoutMain = ({ children }: ILayoutMainProps) => {
         <Sidebar />
         <main className='flex-1 overflow-auto bg-[#F4F4F4]'>
           <div className='w-full h-16 bg-[#FCFCFC]  px-4 fixed z-50'>
-            <Avatar className='absolute top-4 left-[97rem]'>
+            <Avatar className='absolute top-4 left-[21rem] md:left-[97rem]'>
               <AvatarImage
                 src='https://thuthuatnhanh.com/wp-content/uploads/2022/04/Hinh-nen-Songoku-4K-dep-nhat.jpg'
                 alt='@shadcn'
