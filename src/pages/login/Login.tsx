@@ -148,19 +148,11 @@ export default function Login() {
                 <div className='flex-1 border-t border-gray-400'></div>
               </div>
 
-              <Button
-                loading={isLoading}
-                className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'
-                type='submit'
-              >
+              <Button className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'>
                 <img src={GoogleIcons} alt='Facebook' className='w-8 h-8 p-1 rounded-full' />
                 Sign in with Google
               </Button>
-              <Button
-                loading={isLoading}
-                className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'
-                type='submit'
-              >
+              <Button className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'>
                 <img src={FacebookIcons1} alt='Facebook' className='w-8 h-8 p-1 rounded-full' />
                 Sign in with Facebook
               </Button>
@@ -174,11 +166,11 @@ export default function Login() {
           </Form>
         </div>
       </div>
-      <div className='w-full pr-[8rem] '>
+      <div className='w-full pr-[8rem] flex justify-center items-center'>
         <img
           src='https://livewallp.com/wp-content/uploads/2020/12/Whale-and-sea.jpg'
           alt=''
-          className='rounded-lg w-[35rem] h-[41.5rem] object-cover my-10 '
+          className='rounded-lg w-[36rem] h-[50rem] object-cover my-10 '
         />
       </div>
     </div>
