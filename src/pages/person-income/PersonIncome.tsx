@@ -1,3 +1,9 @@
+import TablePersonIncome from './components/table-person-income'
+
 export default function PersonIncome() {
-  return <div>PersonIncome</div>
+  return (
+    <div className='w-full'>
+      <TablePersonIncome />
+    </div>
+  )
 }
