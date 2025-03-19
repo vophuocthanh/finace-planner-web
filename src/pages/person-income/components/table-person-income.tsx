@@ -167,7 +167,7 @@ export default function TablePersonIncome() {
           <Button
             iconLeft={<Plus />}
             variant='outline'
-            className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width'
+            className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width hover:shadow-md hover:shadow-primary/50'
           >
             Thêm thu nhập cá nhân
           </Button>
