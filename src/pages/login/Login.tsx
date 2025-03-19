@@ -1,4 +1,5 @@
-import { IconEye, IconNonEye } from '@/assets/icons'
+import { FacebookIcons1, GoogleIcons, IconEye, IconNonEye } from '@/assets/icons'
+import { BannerLogin, logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -20,8 +21,6 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
-import FacebookIcons1 from '@/assets/icons/facebook1.png'
-import GoogleIcons from '@/assets/icons/google.png'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -80,6 +79,9 @@ export default function Login() {
     <div className='flex justify-center w-full h-screen overflow-hidden '>
       <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] mb-[10rem] ml-[10rem]'>
         <div className='flex flex-col w-full ml-32 space-y-2 mt-[4rem]'>
+          <Link to='/' className='w-40 mb-10'>
+            <img src={logo} alt='logo' className='object-cover w-full h-full' />
+          </Link>
           <h1 className='text-5xl font-semibold'>Login</h1>
           <p className='text-sm text-[#112211]'>Login to access your account</p>
           <Form {...form}>
@@ -167,11 +169,7 @@ export default function Login() {
         </div>
       </div>
       <div className='w-full pr-[8rem] flex justify-center items-center'>
-        <img
-          src='https://livewallp.com/wp-content/uploads/2020/12/Whale-and-sea.jpg'
-          alt=''
-          className='rounded-lg w-[36rem] h-[50rem] object-cover my-10 '
-        />
+        <img src={BannerLogin} alt='' className='my-10 rounded-lg' />
       </div>
     </div>
   )

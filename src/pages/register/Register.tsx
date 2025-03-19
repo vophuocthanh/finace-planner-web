@@ -1,4 +1,5 @@
 import { IconEye, IconNonEye } from '@/assets/icons'
+import { BannerRegister } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -60,11 +61,7 @@ export default function Register() {
   return (
     <div className='flex justify-center w-full h-screen'>
       <div className='flex items-center justify-center w-full'>
-        <img
-          src='https://steamuserimages-a.akamaihd.net/ugc/2042991568439355549/F74B959B18E7733F270632615B4ADB9C1FA856FF/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false'
-          alt=''
-          className='rounded-lg w-[36rem] h-[50rem] object-cover my-10 ml-44'
-        />
+        <img src={BannerRegister} alt='' className='my-10 rounded-lg ml-44' />
       </div>
       <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] ml-80 mr-[8rem] '>
         <div className='flex flex-col w-full space-y-2'>

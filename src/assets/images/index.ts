@@ -8,6 +8,8 @@ import avatarShopify from './sponsor/shopify.png'
 import avatarWhatApp from './sponsor/whatapp.png'
 import avatarBmw from './sponsor/bmw.png'
 import avatarMarriot from './sponsor/mariot.png'
+import BannerRegister from './banner-login.png'
+import BannerLogin from './banner-register.png'
 
 export {
   backgroundBanner,
@@ -19,5 +21,7 @@ export {
   avatarShopify,
   avatarWhatApp,
   avatarBmw,
-  avatarMarriot
+  avatarMarriot,
+  BannerLogin,
+  BannerRegister
 }

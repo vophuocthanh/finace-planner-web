@@ -10,5 +10,6 @@ export { default as IconChervonRight } from './icon-chervon-right.tsx'
 import FacebookIcons from './facebook.png'
 import LinkedinIcons from './linkedIn.png'
 import TwitterIcons from './x.png'
-
-export { FacebookIcons, LinkedinIcons, TwitterIcons }
+import FacebookIcons1 from './Facebook1.png'
+import GoogleIcons from './google.png'
+export { FacebookIcons, LinkedinIcons, TwitterIcons, FacebookIcons1, GoogleIcons }
