@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import PersonIncome from '@/pages/person-income/PersonIncome'
 import PersonExpense from '@/pages/person-expense/PersonExpense'
 import PersonSaving from '@/pages/person-saving/PersonSaving'
+import ManagerUser from '@/pages/manager-user/ManagerUser'
 
 interface RouteConfig {
   path: string
@@ -53,6 +54,14 @@ export default function useRoutesElements() {
       element: (
         <LayoutMain>
           <PersonSaving />
+        </LayoutMain>
+      )
+    },
+    {
+      path: path.admin.manageUser,
+      element: (
+        <LayoutMain>
+          <ManagerUser />
         </LayoutMain>
       )
     },

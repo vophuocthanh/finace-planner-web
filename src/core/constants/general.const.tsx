@@ -1,4 +1,4 @@
-import { IconDashboard, IconExpense, IconSavings } from '@/assets/icons'
+import { IconDashboard, IconExpense, IconPerson, IconSavings } from '@/assets/icons'
 import IconPersonIncome from '@/assets/icons/icon-person-income'
 import { path } from '@/core/constants/path'
 import { TSidebarLinks } from '@/models/types/general.type'
@@ -23,5 +23,10 @@ export const sidebarLinks: TSidebarLinks[] = [
     title: 'Person Saving',
     icon: <IconSavings />,
     path: path.admin.saving
+  },
+  {
+    title: 'Manage User',
+    icon: <IconPerson />,
+    path: path.admin.manageUser
   }
 ]

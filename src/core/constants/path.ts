@@ -15,6 +15,7 @@ export const path = {
     expense: `${ROUTE_ADMIN}/expense`,
     users: `${ROUTE_ADMIN}/users`,
     category: `${ROUTE_ADMIN}/category`,
-    saving: `${ROUTE_ADMIN}/saving`
+    saving: `${ROUTE_ADMIN}/saving`,
+    manageUser: `${ROUTE_ADMIN}/manage-user`
   }
 }
