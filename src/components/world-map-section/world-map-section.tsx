@@ -1,3 +1,4 @@
+import SectionInViewUp from '@/components/animation/SectionInViewUp'
 import { WorldMap } from '@/components/ui/world-map'
 import { mapDots } from '@/core/shared/data/mapDots'
 import { motion } from 'motion/react'
@@ -6,7 +7,7 @@ const textWords = 'Nothing you don’t'
 
 export function WorldMapSection() {
   return (
-    <div className='w-full py-40'>
+    <SectionInViewUp className='w-full py-40'>
       <div className='mx-auto text-center max-w-7xl'>
         <p className='text-xl font-bold text-black md:text-4xl dark:text-white'>
           Everything you need.{' '}
@@ -30,6 +31,6 @@ export function WorldMapSection() {
         </p>
       </div>
       <WorldMap dots={mapDots} />
-    </div>
+    </SectionInViewUp>
   )
 }

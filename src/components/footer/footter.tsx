@@ -1,9 +1,10 @@
 import { FacebookIcons, LinkedinIcons, TwitterIcons } from '@/assets/icons'
+import SectionInViewUp from '@/components/animation/SectionInViewUp'
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
-    <footer className='w-full'>
+    <SectionInViewUp className='w-full'>
       <div className='w-full h-1 border-t-2 border-t-[#A1A1AA]' />
       <div className='py-10 mx-auto space-y-10 max-w-7xl'>
         <div className='flex justify-between gap-10'>
@@ -36,6 +37,6 @@ export default function Footer() {
           </span>
         </div>
       </div>
-    </footer>
+    </SectionInViewUp>
   )
 }

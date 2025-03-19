@@ -15,14 +15,17 @@ interface ISidebarLinkProps {
 }
 
 const SidebarLink = ({ link, isActive, isCollapsed }: ISidebarLinkProps) => {
-  const baseClasses = 'flex items-center gap-4 font-medium text-base rounded-xl py-4 transition-all duration-300'
-  const collapsedClasses = isCollapsed ? 'justify-center px-0' : 'px-6'
-  const activeClasses = isActive ? 'bg-primary text-white' : 'hover:text-primary'
-
   return (
-    <Link to={link.path} className={`${baseClasses} ${collapsedClasses} ${activeClasses}`}>
-      <span className={classNames(isActive ? 'svg-animate' : '', 'transition-all duration-300')}>
-        {link.icon && React.cloneElement(link.icon, { color: isActive ? '#fff' : '#717171' })}
+    <Link
+      to={link.path}
+      className={classNames(
+        'flex items-center gap-4 font-medium text-base rounded-xl py-4 transition-all duration-300 group',
+        { 'justify-center px-0': isCollapsed, 'px-6': !isCollapsed },
+        { 'bg-primary text-white': isActive, 'hover:text-primary': !isActive }
+      )}
+    >
+      <span className={classNames('transition-all duration-300 group-hover:text-primary', { 'svg-animate': isActive })}>
+        {link.icon && React.cloneElement(link.icon, { color: isActive ? '#fff' : 'currentColor' })}
       </span>
       {!isCollapsed && <span>{link.title}</span>}
     </Link>

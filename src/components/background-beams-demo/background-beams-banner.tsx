@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
 import { BackgroundBeams } from '../ui/background-beams'
+import SectionInViewUp from '@/components/animation/SectionInViewUp'
 
 const listImgArr = [
   {
@@ -50,7 +51,7 @@ const listImgArr = [
 
 export function BackgroundBeamsBanner() {
   return (
-    <div className='relative flex flex-col items-center justify-center w-full h-screen antialiased'>
+    <SectionInViewUp className='relative flex flex-col items-center justify-center w-full h-screen antialiased'>
       <div className='flex mx-auto mt-[150px] w-full justify-between'>
         <div className='flex relative left-36 top-[121px] flex-col p-4'>
           <h1 className='w-[568px] z-10 font-sans text-lg font-bold text-transparent md:text-7xl bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600'>
@@ -81,6 +82,6 @@ export function BackgroundBeamsBanner() {
         </div>
       </div>
       <BackgroundBeams />
-    </div>
+    </SectionInViewUp>
   )
 }
