@@ -77,15 +77,15 @@ export default function Login() {
 
   return (
     <div className='flex justify-center w-full h-screen overflow-hidden '>
-      <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] mb-[10rem] ml-[10rem]'>
-        <div className='flex flex-col w-full ml-32 space-y-2 mt-[4rem]'>
+      <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem] mb-[10rem] md:ml-[10rem]'>
+        <div className='flex flex-col justify-center items-center md:items-start w-full md:ml-32 space-y-2 mt-[4rem]'>
           <Link to='/' className='w-40 mb-10'>
             <img src={logo} alt='logo' className='object-cover w-full h-full' />
           </Link>
           <h1 className='text-5xl font-semibold'>Login</h1>
           <p className='text-sm text-[#112211]'>Login to access your account</p>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='w-2/3 space-y-6'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='w-10/12 space-y-6 md:w-2/3'>
               <FormField
                 control={form.control}
                 name='email'
@@ -160,7 +160,7 @@ export default function Login() {
               </Button>
               <p className='flex items-center justify-center'>
                 Don’t have an account?&nbsp;
-                <Link to='/register' className='cursor-pointer text-redCustom hover:underline'>
+                <Link to='/register' className='cursor-pointer text-primary hover:underline'>
                   Sign up
                 </Link>
               </p>
@@ -168,7 +168,7 @@ export default function Login() {
           </Form>
         </div>
       </div>
-      <div className='w-full pr-[8rem] flex justify-center items-center'>
+      <div className='hidden w-full pr-[8rem] md:flex justify-center items-center'>
         <img src={BannerLogin} alt='' className='my-10 rounded-lg' />
       </div>
     </div>

@@ -60,15 +60,17 @@ export default function Register() {
 
   return (
     <div className='flex justify-center w-full h-screen'>
-      <div className='flex items-center justify-center w-full'>
+      <div className='items-center justify-center hidden w-full md:flex'>
         <img src={BannerRegister} alt='' className='my-10 rounded-lg ml-44' />
       </div>
-      <div className='flex items-center justify-between w-full mx-auto my-auto max-w-[90rem] ml-80 mr-[8rem] '>
-        <div className='flex flex-col w-full space-y-2'>
+      <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem] md:ml-80 md:mr-[8rem] '>
+        <div className='flex flex-col items-center w-full space-y-2 md:items-start'>
           <h1 className='text-5xl font-semibold'>Register</h1>
-          <p className='text-sm text-[#112211]'>Let’s get you all st up so you can access your personal account.</p>
+          <p className='text-sm text-[#112211] text-center md:text-left px-10 md:px-0'>
+            Let’s get you all st up so you can access your personal account.
+          </p>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleRegister)} className='w-2/3 space-y-6'>
+            <form onSubmit={form.handleSubmit(handleRegister)} className='w-10/12 space-y-6 md:w-2/3'>
               <FormField
                 control={form.control}
                 name='email'
@@ -82,7 +84,7 @@ export default function Register() {
                   </FormItem>
                 )}
               />
-              <div className='flex w-full gap-6'>
+              <div className='flex flex-col w-full gap-6 md:flex-row'>
                 <FormField
                   control={form.control}
                   name='name'
@@ -153,7 +155,7 @@ export default function Register() {
               <div className='flex justify-between'>
                 <div className='flex items-center justify-center space-x-2'>
                   <Checkbox id='terms' className='w-4 h-4' />
-                  <Label htmlFor='terms' className='text-base font-normal text-gray-500 cursor-pointer'>
+                  <Label htmlFor='terms' className='mt-6 text-base font-normal text-gray-500 cursor-pointer md:mt-0'>
                     I agree to all the <span className='text-redCustom'>Terms</span> and{' '}
                     <span className='text-redCustom'>Privacy Policies</span>
                   </Label>
@@ -168,7 +170,7 @@ export default function Register() {
               </Button>
               <p className='flex items-center justify-center'>
                 Already have an account?&nbsp;
-                <Link to={path.login} className='cursor-pointer hover:underline text-redCustom'>
+                <Link to={path.login} className='cursor-pointer hover:underline text-primary'>
                   Login
                 </Link>
               </p>
