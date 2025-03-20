@@ -242,9 +242,9 @@ export default function TablePersonIncome() {
             setFilterValue(event.target.value)
             debouncedSetFilter(event.target.value)
           }}
-          className='w-80 md:max-w-sm'
+          className='w-[22rem] md:max-w-sm'
         />
-        <div className='flex items-center gap-2 md:gap-4'>
+        <div className='flex items-center gap-12 md:gap-4'>
           <Button
             iconLeft={<Plus />}
             onClick={handleAddButtonClick}

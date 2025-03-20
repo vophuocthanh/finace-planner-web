@@ -56,7 +56,7 @@ const Sidebar = () => {
         'md:h-full md:flex md:flex-col md:static',
         'transition-width duration-300',
         // Mobile styles
-        'fixed bottom-0 left-0 right-0 h-20 flex w-full'
+        'fixed bottom-0 left-0 right-0 h-20 flex w-full z-50'
       )}
     >
       <div className={classNames('flex items-center gap-2 mb-5', 'hidden md:flex')}>
