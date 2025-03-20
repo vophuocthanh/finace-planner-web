@@ -159,7 +159,7 @@ export default function TablePersonIncome() {
 
     {
       accessorKey: 'category',
-      header: () => <div>Danh mục</div>,
+      header: () => <div className='w-20'>Danh mục</div>,
       cell: memo(
         ({ row }) => {
           const category = row.getValue('category') as CategoryPersonIncomeResponse
@@ -175,7 +175,7 @@ export default function TablePersonIncome() {
         ({ row }) => {
           const monthly = row.getValue('monthly') as MonthlyPersonIncomeResponse
           return (
-            <div className='font-medium'>
+            <div className='font-medium w-36'>
               {monthly?.nameMonth} - {monthly?.yearly?.year}
             </div>
           )
@@ -233,8 +233,8 @@ export default function TablePersonIncome() {
   if (error) return <EmptyDocuments isNewVersion />
 
   return (
-    <div className='w-full h-[calc(100vh-83px)] p-4 bg-white rounded-md shadow-md'>
-      <div className='flex items-center justify-between gap-2 py-4'>
+    <div className='w-full md:h-[calc(100vh-83px)] p-4 bg-white rounded-md shadow-md'>
+      <div className='flex flex-col items-center gap-2 py-4 md:justify-between md:flex-row'>
         <Input
           placeholder='Tìm kiếm theo mô tả...'
           value={filterValue}
@@ -242,9 +242,9 @@ export default function TablePersonIncome() {
             setFilterValue(event.target.value)
             debouncedSetFilter(event.target.value)
           }}
-          className='max-w-sm'
+          className='w-80 md:max-w-sm'
         />
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2 md:gap-4'>
           <Button
             iconLeft={<Plus />}
             onClick={handleAddButtonClick}
@@ -281,7 +281,7 @@ export default function TablePersonIncome() {
         {data === undefined ? (
           <EmptyDocuments isNewVersion />
         ) : (
-          <Table>
+          <Table className='w-full'>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -313,7 +313,7 @@ export default function TablePersonIncome() {
           </Table>
         )}
       </div>
-      <div className='fixed flex items-center justify-end p-4 py-4 space-x-2 bg-white bottom-3 right-6'>
+      <div className='flex items-center justify-end p-4 py-4 space-x-2 bg-white md:fixed md:bottom-3 md:right-6'>
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
           selected.

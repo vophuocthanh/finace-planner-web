@@ -33,3 +33,5 @@ export const removeAccessTokenFromLS = () => {
 export const setUserToLS = (user: { id: string; name: string; email: string; role: string }) => {
   localStorage.setItem('user', JSON.stringify(user))
 }
+
+export const checkToken = getAccessTokenFromLS()

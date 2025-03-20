@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { path } from '@/core/constants/path'
-import { clearLS } from '@/core/shared/storage'
+import { checkToken, clearLS } from '@/core/shared/storage'
 import { useGetMe } from '@/hooks/me/useGetMeQuery'
 import { CreditCard, LogOut, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -48,11 +48,13 @@ export default function DropdownHeader() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link to={path.admin.dashboard} className='flex items-center justify-between w-full'>
-              <CreditCard className='w-4 h-4 mr-2' />
-              <span>Admin</span>
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </Link>
+            {checkToken && (
+              <Link to={path.admin.dashboard} className='flex items-center justify-between w-full'>
+                <CreditCard className='w-4 h-4 mr-2' />
+                <span>Admin</span>
+                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+              </Link>
+            )}
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

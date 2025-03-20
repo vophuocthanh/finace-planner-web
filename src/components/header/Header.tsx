@@ -1,14 +1,12 @@
 import { logo } from '@/assets/images'
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-import classNames from 'classnames'
-import { getAccessTokenFromLS } from '@/core/shared/storage'
 import DropdownHeader from '@/components/header/dropdown-header'
+import { checkToken } from '@/core/shared/storage'
+import classNames from 'classnames'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
-
-  const token = getAccessTokenFromLS()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +60,7 @@ export default function Header() {
         </Link>
       </div>
       <div className='flex items-center gap-10'>
-        {token ? (
+        {checkToken ? (
           <DropdownHeader />
         ) : (
           <>

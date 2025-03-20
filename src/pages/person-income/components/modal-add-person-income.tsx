@@ -96,7 +96,7 @@ export default function ModalAddPersonIncome({
   return (
     <div>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className='w-[340px] sm:max-w-[425px] rounded-lg'>
           <DialogHeader>
             <DialogTitle>{isEditMode ? 'Sửa thu nhập' : 'Thêm thu nhập'}</DialogTitle>
             <DialogDescription>
@@ -184,7 +184,7 @@ export default function ModalAddPersonIncome({
                 />
                 <Button
                   loading={isLoading}
-                  className='w-full text-white bg-primary hover:shadow-lg hover:bg-primary/80'
+                  className='w-full h-10 text-white bg-primary hover:shadow-lg hover:bg-primary/80'
                   type='submit'
                 >
                   {isEditMode ? 'Sửa thu nhập' : 'Thêm thu nhập'}
