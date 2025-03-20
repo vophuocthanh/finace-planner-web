@@ -32,8 +32,17 @@ export default function ModalAddPersonIncome({
   id
 }: ModalAddPersonIncomeProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { data: categories } = useCategories()
-  const { data: monthlies } = useMonthly()
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+  const [isMonthlyOpen, setIsMonthlyOpen] = useState(false)
+
+  const { data: categories, isLoading: isCategoriesLoading } = useCategories({
+    enabled: isCategoryOpen || isEditMode
+  })
+
+  const { data: monthlies, isLoading: isMonthliesLoading } = useMonthly({
+    enabled: isMonthlyOpen || isEditMode
+  })
+
   const { mutate: mutation } = useCreatePersonIncome()
   const { mutate: updateMutation } = useUpdatePersonIncome(id || '')
 
@@ -96,7 +105,7 @@ export default function ModalAddPersonIncome({
   return (
     <div>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className='w-[340px] sm:max-w-[425px] rounded-lg'>
+        <DialogContent className='w-[340px] sm:w-[525px] rounded-lg'>
           <DialogHeader>
             <DialogTitle>{isEditMode ? 'Sửa thu nhập' : 'Thêm thu nhập'}</DialogTitle>
             <DialogDescription>
@@ -139,13 +148,19 @@ export default function ModalAddPersonIncome({
                     <FormItem>
                       <FormLabel>Danh mục</FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          onOpenChange={(open) => setIsCategoryOpen(open)}
+                        >
                           <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Chọn danh mục' />
+                            <SelectValue
+                              placeholder={isCategoriesLoading && isCategoryOpen ? 'Đang tải...' : 'Chọn danh mục'}
+                            />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectGroup>
-                              {categories?.data.map((category) => (
+                              {categories?.data?.map((category) => (
                                 <SelectItem key={category.id} value={category.id ?? ''}>
                                   {category.name}
                                 </SelectItem>
@@ -165,12 +180,18 @@ export default function ModalAddPersonIncome({
                     <FormItem>
                       <FormLabel>Tháng</FormLabel>
                       <FormControl>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          onOpenChange={(open) => setIsMonthlyOpen(open)}
+                        >
                           <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Chọn tháng' />
+                            <SelectValue
+                              placeholder={isMonthliesLoading && isMonthlyOpen ? 'Đang tải...' : 'Chọn tháng'}
+                            />
                           </SelectTrigger>
                           <SelectContent>
-                            {monthlies?.data.map((monthly) => (
+                            {monthlies?.data?.map((monthly) => (
                               <SelectItem key={monthly.id} value={monthly.id ?? ''}>
                                 {monthly.nameMonth}
                               </SelectItem>
