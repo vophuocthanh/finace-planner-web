@@ -1,4 +1,6 @@
 import { LoadingCM } from '@/components'
+import EmptyDocuments from '@/components/empty/empty-document'
+import ModalDeleteItem from '@/components/modal/modal-delete-item'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -6,7 +8,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
@@ -14,7 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { STANDARD_DATE_FORMAT_SLASH } from '@/configs/consts'
 import { formatDate } from '@/core/helpers/date-time'
 import { formatNumber } from '@/core/helpers/number'
-import { usePersonIncome } from '@/hooks/person-income/usePersonIncomeQuery'
+import { useDeletePersonIncome, usePersonIncome } from '@/hooks/person-income/usePersonIncomeQuery'
 import {
   CategoryPersonIncomeResponse,
   MonthlyPersonIncomeResponse,
@@ -33,7 +34,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { debounce } from 'lodash'
+import { debounce, isEqual } from 'lodash'
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { VND_CURRENCY_UNIT } from '../../../configs/consts'
@@ -46,9 +47,28 @@ export default function TablePersonIncome() {
   const [filterValue, setFilterValue] = useState<string>('')
   const [openModalAddPersonIncome, setOpenModalAddPersonIncome] = useState<boolean>(false)
   const [editPersonIncomeData, setEditPersonIncomeData] = useState<PersonIncomeResponse | undefined>(undefined)
+  const [openModalDeleteItem, setOpenModalDeleteItem] = useState<boolean>(false)
+  const [deletePaymentId, setDeletePaymentId] = useState<string | undefined>(undefined)
+
+  const { mutate: deletePersonIncome } = useDeletePersonIncome(deletePaymentId ?? '')
+
+  const handleOpenModalDeleteItem = (open: boolean, paymentId?: string) => {
+    setOpenModalDeleteItem(open)
+    if (open && paymentId) {
+      setDeletePaymentId(paymentId)
+    } else {
+      setDeletePaymentId(undefined)
+    }
+  }
+  const handleDeletePersonIncome = () => {
+    if (deletePaymentId) {
+      deletePersonIncome()
+      setOpenModalDeleteItem(false)
+    }
+  }
 
   const handleEditPersonIncome = (paymentId: string) => {
-    const selectedIncome = personIncome?.data.find((item) => item.id === paymentId)
+    const selectedIncome = personIncome?.data.find((item) => isEqual(item.id, paymentId))
     setEditPersonIncomeData(selectedIncome)
     setOpenModalAddPersonIncome(true)
   }
@@ -102,7 +122,7 @@ export default function TablePersonIncome() {
       header: 'Mô tả',
       cell: memo(
         ({ row }) => <div className='capitalize'>{row.getValue('description')}</div>,
-        (prev, next) => prev.row.getValue('description') === next.row.getValue('description')
+        (prev, next) => isEqual(prev.row.getValue('description'), next.row.getValue('description'))
       )
     },
     {
@@ -117,7 +137,7 @@ export default function TablePersonIncome() {
             </div>
           )
         },
-        (prev, next) => prev.row.getValue('amount') === next.row.getValue('amount')
+        (prev, next) => isEqual(prev.row.getValue('amount'), next.row.getValue('amount'))
       )
     },
     {
@@ -133,7 +153,7 @@ export default function TablePersonIncome() {
           const createAt = row.getValue('createAt') as string | Date
           return <div className='lowercase'>{formatDate(createAt, STANDARD_DATE_FORMAT_SLASH)}</div>
         },
-        (prev, next) => prev.row.getValue('createAt') === next.row.getValue('createAt')
+        (prev, next) => isEqual(prev.row.getValue('createAt'), next.row.getValue('createAt'))
       )
     },
 
@@ -145,7 +165,7 @@ export default function TablePersonIncome() {
           const category = row.getValue('category') as CategoryPersonIncomeResponse
           return <div className='font-medium'>{category?.name}</div>
         },
-        (prev, next) => prev.row.getValue('category') === next.row.getValue('category')
+        (prev, next) => isEqual(prev.row.getValue('category'), next.row.getValue('category'))
       )
     },
     {
@@ -160,7 +180,7 @@ export default function TablePersonIncome() {
             </div>
           )
         },
-        (prev, next) => prev.row.getValue('monthly') === next.row.getValue('monthly')
+        (prev, next) => isEqual(prev.row.getValue('monthly'), next.row.getValue('monthly'))
       )
     },
     {
@@ -176,12 +196,8 @@ export default function TablePersonIncome() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id ?? '')}>
-                Copy payment ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleEditPersonIncome(payment.id ?? '')}>Sửa thu nhập</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleEditPersonIncome(payment.id ?? '')}>Xem/Sửa</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleOpenModalDeleteItem(true, payment.id ?? '')}>Xóa</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
@@ -214,10 +230,10 @@ export default function TablePersonIncome() {
   const visibleColumns = useMemo(() => table.getAllColumns().filter((column) => column.getCanHide()), [table])
 
   if (isLoading) return <LoadingCM />
-  if (error) return <div className='flex items-center justify-center h-screen'>Error: {error.message}</div>
+  if (error) return <EmptyDocuments isNewVersion />
 
   return (
-    <div className='w-full p-4 bg-white rounded-md shadow-md'>
+    <div className='w-full h-[calc(100vh-83px)] p-4 bg-white rounded-md shadow-md'>
       <div className='flex items-center justify-between gap-2 py-4'>
         <Input
           placeholder='Tìm kiếm theo mô tả...'
@@ -262,38 +278,42 @@ export default function TablePersonIncome() {
         </div>
       </div>
       <div className='border rounded-md'>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+        {data === undefined ? (
+          <EmptyDocuments isNewVersion />
+        ) : (
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className='h-24 text-center'>
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className='h-24 text-center'>
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
-      <div className='flex items-center justify-end py-4 space-x-2'>
+      <div className='fixed flex items-center justify-end p-4 py-4 space-x-2 bg-white bottom-3 right-6'>
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
           selected.
@@ -320,6 +340,16 @@ export default function TablePersonIncome() {
           personIncomeData={editPersonIncomeData}
           isEditMode={!!editPersonIncomeData}
           id={editPersonIncomeData ? editPersonIncomeData.id : undefined}
+        />
+      )}
+
+      {openModalDeleteItem && (
+        <ModalDeleteItem
+          isOpen={openModalDeleteItem}
+          onOpenChange={(open) => handleOpenModalDeleteItem(open)}
+          title='Xóa thu nhập cá nhân'
+          description='Bạn có chắc chắn muốn xóa thu nhập cá nhân này không?'
+          onDelete={handleDeletePersonIncome}
         />
       )}
     </div>

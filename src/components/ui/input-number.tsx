@@ -3,23 +3,35 @@ import * as React from 'react'
 
 export interface InputNumberDecimalProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'onChange'> {
-  onChange?: (value: string) => void
+  onChange?: (value: number) => void
+  value?: number
 }
 
-const formatDecimal = (value: string) => {
-  const numbersOnly = value.replace(/\D/g, '')
-
-  return numbersOnly.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+const formatDecimal = (value: number): string => {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
 const InputNumber = React.forwardRef<HTMLInputElement, InputNumberDecimalProps>(
-  ({ className, onChange, ...props }, ref) => {
-    const [displayValue, setDisplayValue] = React.useState('')
+  ({ className, onChange, value, ...props }, ref) => {
+    const [displayValue, setDisplayValue] = React.useState(() => {
+      return value !== undefined ? formatDecimal(value) : ''
+    })
+
+    React.useEffect(() => {
+      if (value !== undefined) {
+        setDisplayValue(formatDecimal(value))
+      }
+    }, [value])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const formattedValue = formatDecimal(e.target.value)
-      setDisplayValue(formattedValue)
-      onChange?.(formattedValue)
+      const rawValue = e.target.value.replace(/\./g, '')
+      const numericValue = rawValue ? parseInt(rawValue, 10) : 0
+
+      if (!isNaN(numericValue)) {
+        const formattedValue = formatDecimal(numericValue)
+        setDisplayValue(formattedValue)
+        onChange?.(numericValue)
+      }
     }
 
     return (

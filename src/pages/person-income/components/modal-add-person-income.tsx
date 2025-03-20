@@ -1,12 +1,5 @@
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { InputNumber } from '@/components/ui/input-number'
@@ -69,8 +62,12 @@ export default function ModalAddPersonIncome({
 
   function onSubmit(values: z.infer<typeof PersonIncomeSchema>) {
     setIsLoading(true)
+    const payload = {
+      ...values,
+      amount: Number(values.amount)
+    }
     if (isEditMode) {
-      updateMutation(values, {
+      updateMutation(payload, {
         onSuccess: () => {
           setIsLoading(false)
           onOpenChange(false)
@@ -82,7 +79,7 @@ export default function ModalAddPersonIncome({
         }
       })
     } else {
-      mutation(values, {
+      mutation(payload, {
         onSuccess: () => {
           setIsLoading(false)
           onOpenChange(false)
@@ -99,9 +96,6 @@ export default function ModalAddPersonIncome({
   return (
     <div>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogTrigger asChild>
-          <Button variant='outline'>{isEditMode ? 'Sửa thu nhập' : 'Thêm thu nhập'}</Button>
-        </DialogTrigger>
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>
             <DialogTitle>{isEditMode ? 'Sửa thu nhập' : 'Thêm thu nhập'}</DialogTitle>
