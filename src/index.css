@@ -106,3 +106,10 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.text-wrapper {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

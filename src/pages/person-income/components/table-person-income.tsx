@@ -38,6 +38,7 @@ import { debounce, isEqual } from 'lodash'
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { VND_CURRENCY_UNIT } from '../../../configs/consts'
+import { Tooltip } from 'antd'
 
 export default function TablePersonIncome() {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -121,7 +122,11 @@ export default function TablePersonIncome() {
       accessorKey: 'description',
       header: 'Mô tả',
       cell: memo(
-        ({ row }) => <div className='capitalize'>{row.getValue('description')}</div>,
+        ({ row }) => (
+          <Tooltip title={row.getValue('description')}>
+            <div className='w-40 capitalize text-wrapper md:w-full'>{row.getValue('description')}</div>
+          </Tooltip>
+        ),
         (prev, next) => isEqual(prev.row.getValue('description'), next.row.getValue('description'))
       )
     },
