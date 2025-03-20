@@ -3,5 +3,8 @@ import { monthlyService } from '@/core/services/monthly.service'
 import { useQuery } from '@tanstack/react-query'
 
 export const useMonthly = () => {
-  return useQuery({ queryKey: mutationKeys.getMonthly, queryFn: monthlyService.getMonthly })
+  return useQuery({
+    queryKey: mutationKeys.getMonthly,
+    queryFn: () => monthlyService.getMonthly({ items_per_page: 100 })
+  })
 }
