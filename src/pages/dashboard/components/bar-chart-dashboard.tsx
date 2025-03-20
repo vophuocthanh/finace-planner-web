@@ -6,7 +6,7 @@ import { chartConfigBar, chartDataBar } from '@/core/data/chart-data'
 
 export function BarChartDashboard() {
   return (
-    <Card className='w-1/2'>
+    <Card className='w-full mb-24 md:w-1/2 md:mb-0'>
       <CardHeader>
         <CardTitle>Bar Chart - Custom Label</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

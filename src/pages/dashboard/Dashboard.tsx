@@ -4,10 +4,10 @@ import { BarChartDashboard } from '@/pages/dashboard/components/bar-chart-dashbo
 
 export default function Dashboard() {
   return (
-    <div className='w-full h-full'>
+    <div className='w-full h-[calc(100vh-10rem)] md:h-full'>
       <ChartDashboard />
-      <div className='flex gap-4 mt-6'>
-        <div className='flex w-1/2 gap-10 ml-10'>
+      <div className='flex flex-col gap-4 mt-4 md:mt-6 md:flex-row'>
+        <div className='flex flex-col gap-4 md:gap-10 md:ml-10 md:w-1/2 md:flex-row'>
           <PieChartDashboard />
           <PieChartDashboard />
         </div>
