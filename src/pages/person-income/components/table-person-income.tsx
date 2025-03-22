@@ -36,11 +36,11 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import { Tooltip } from 'antd'
 import { debounce, isEqual } from 'lodash'
 import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from 'lucide-react'
 import { memo, useCallback, useMemo, useState } from 'react'
 import { VND_CURRENCY_UNIT } from '../../../configs/consts'
-import { Tooltip } from 'antd'
 
 export default function TablePersonIncome() {
   const [sorting, setSorting] = useState([])
@@ -117,7 +117,7 @@ export default function TablePersonIncome() {
       cell: memo(
         ({ row }) => (
           <Tooltip title={row.getValue('description')}>
-            <div className='w-40 capitalize text-wrapper md:w-full'>{row.getValue('description')}</div>
+            <div className='w-40 text-wrapper md:w-full'>{row.getValue('description')}</div>
           </Tooltip>
         ),
         (prev, next) => isEqual(prev.row.getValue('description'), next.row.getValue('description'))
