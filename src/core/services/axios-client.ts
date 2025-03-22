@@ -3,6 +3,8 @@ import { getAccessTokenFromLS, removeAccessTokenFromLS } from '@/core/shared/sto
 import axios, { HttpStatusCode } from 'axios'
 import { isEqual } from 'lodash'
 
+const controllers = new Map<string, AbortController>()
+
 const axiosClient = axios.create({
   baseURL: config.baseUrl,
   headers: {
@@ -10,13 +12,27 @@ const axiosClient = axios.create({
   }
 })
 
-// Request interceptor
 axiosClient.interceptors.request.use(
   (config) => {
+    if (config.url) {
+      const prevController = controllers.get(config.url)
+      if (prevController) {
+        prevController.abort()
+      }
+    }
+
+    const controller = new AbortController()
+    config.signal = controller.signal
+
+    if (config.url) {
+      controllers.set(config.url, controller)
+    }
+
     const token = getAccessTokenFromLS()
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+
     return config
   },
   (error) => {
@@ -27,6 +43,9 @@ axiosClient.interceptors.request.use(
 // Response interceptor
 axiosClient.interceptors.response.use(
   (response) => {
+    if (response.config.url) {
+      controllers.delete(response.config.url)
+    }
     return response.data
   },
   async (error) => {
@@ -36,6 +55,11 @@ axiosClient.interceptors.response.use(
     } else if (error.response && isEqual(error.response.status, HttpStatusCode.Unauthorized)) {
       removeAccessTokenFromLS()
     }
+
+    if (originalRequest?.url) {
+      controllers.delete(originalRequest.url)
+    }
+
     return Promise.reject(error)
   }
 )

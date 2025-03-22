@@ -25,6 +25,8 @@ import ModalAddPersonIncome from '@/pages/person-income/components/modal-add-per
 import {
   ColumnDef,
   ColumnFiltersState,
+  OnChangeFn,
+  RowSelectionState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -41,53 +43,44 @@ import { VND_CURRENCY_UNIT } from '../../../configs/consts'
 import { Tooltip } from 'antd'
 
 export default function TablePersonIncome() {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [filterValue, setFilterValue] = useState<string>('')
-  const [openModalAddPersonIncome, setOpenModalAddPersonIncome] = useState<boolean>(false)
-  const [editPersonIncomeData, setEditPersonIncomeData] = useState<PersonIncomeResponse | undefined>(undefined)
-  const [openModalDeleteItem, setOpenModalDeleteItem] = useState<boolean>(false)
-  const [deletePaymentId, setDeletePaymentId] = useState<string | undefined>(undefined)
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false)
+  const [editData, setEditData] = useState<PersonIncomeResponse | undefined>(undefined)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
+  const [deleteId, setDeleteId] = useState<string | undefined>(undefined)
 
-  const { mutate: deletePersonIncome } = useDeletePersonIncome(deletePaymentId ?? '')
-
-  const handleOpenModalDeleteItem = (open: boolean, paymentId?: string) => {
-    setOpenModalDeleteItem(open)
-    if (open && paymentId) {
-      setDeletePaymentId(paymentId)
-    } else {
-      setDeletePaymentId(undefined)
-    }
-  }
-  const handleDeletePersonIncome = () => {
-    if (deletePaymentId) {
-      deletePersonIncome()
-      setOpenModalDeleteItem(false)
-    }
-  }
-
-  const handleEditPersonIncome = (paymentId: string) => {
-    const selectedIncome = personIncome?.data.find((item) => isEqual(item.id, paymentId))
-    setEditPersonIncomeData(selectedIncome)
-    setOpenModalAddPersonIncome(true)
-  }
-
-  const handleOpenModalAddPersonIncome = (open: boolean) => {
-    setOpenModalAddPersonIncome(open)
-
-    if (!open) {
-      setEditPersonIncomeData(undefined)
-    }
-  }
-
-  const handleAddButtonClick = () => {
-    setEditPersonIncomeData(undefined)
-    setOpenModalAddPersonIncome(true)
-  }
-
+  const { mutate: deletePersonIncome } = useDeletePersonIncome(deleteId ?? '')
   const { data: personIncome, isLoading, error } = usePersonIncome()
+
+  const handleOpenDeleteModal = useCallback((open: boolean, id?: string) => {
+    setIsDeleteModalOpen(open)
+    setDeleteId(open && id ? id : undefined)
+  }, [])
+
+  const handleDelete = useCallback(() => {
+    if (deleteId) {
+      deletePersonIncome()
+      setIsDeleteModalOpen(false)
+    }
+  }, [deleteId, deletePersonIncome])
+
+  const handleEdit = useCallback(
+    (id: string) => {
+      const selectedIncome = personIncome?.data.find((item) => isEqual(item.id, id))
+      setEditData(selectedIncome)
+      setIsAddModalOpen(true)
+    },
+    [personIncome?.data]
+  )
+
+  const handleOpenAddModal = useCallback((open: boolean) => {
+    setIsAddModalOpen(open)
+    if (!open) setEditData(undefined)
+  }, [])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetFilter = useCallback(
@@ -201,8 +194,8 @@ export default function TablePersonIncome() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-              <DropdownMenuItem onClick={() => handleEditPersonIncome(payment.id ?? '')}>Xem/Sửa</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleOpenModalDeleteItem(true, payment.id ?? '')}>Xóa</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleEdit(payment.id ?? '')}>Xem/Sửa</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleOpenDeleteModal(true, payment.id ?? '')}>Xóa</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
@@ -216,13 +209,13 @@ export default function TablePersonIncome() {
   const table = useReactTable({
     data,
     columns: memoizedColumns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting as OnChangeFn<SortingState>,
+    onColumnFiltersChange: setColumnFilters as OnChangeFn<ColumnFiltersState>,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: setColumnVisibility as OnChangeFn<VisibilityState>,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
@@ -252,7 +245,7 @@ export default function TablePersonIncome() {
         <div className='flex items-center gap-12 md:gap-4'>
           <Button
             iconLeft={<Plus />}
-            onClick={handleAddButtonClick}
+            onClick={() => setIsAddModalOpen(true)}
             variant='outline'
             className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width hover:shadow-md hover:shadow-primary/50'
           >
@@ -338,23 +331,23 @@ export default function TablePersonIncome() {
         </div>
       </div>
 
-      {openModalAddPersonIncome && (
+      {isAddModalOpen && (
         <ModalAddPersonIncome
-          open={openModalAddPersonIncome}
-          onOpenChange={handleOpenModalAddPersonIncome}
-          personIncomeData={editPersonIncomeData}
-          isEditMode={!!editPersonIncomeData}
-          id={editPersonIncomeData ? editPersonIncomeData.id : undefined}
+          open={isAddModalOpen}
+          onOpenChange={handleOpenAddModal}
+          personIncomeData={editData}
+          isEditMode={!!editData}
+          id={editData ? editData.id : undefined}
         />
       )}
 
-      {openModalDeleteItem && (
+      {isDeleteModalOpen && (
         <ModalDeleteItem
-          isOpen={openModalDeleteItem}
-          onOpenChange={(open) => handleOpenModalDeleteItem(open)}
+          isOpen={isDeleteModalOpen}
+          onOpenChange={(open) => handleOpenDeleteModal(open)}
           title='Xóa thu nhập cá nhân'
           description='Bạn có chắc chắn muốn xóa thu nhập cá nhân này không?'
-          onDelete={handleDeletePersonIncome}
+          onDelete={handleDelete}
         />
       )}
     </div>
