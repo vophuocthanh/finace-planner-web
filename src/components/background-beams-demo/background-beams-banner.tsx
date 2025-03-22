@@ -51,17 +51,17 @@ const listImgArr = [
 
 export function BackgroundBeamsBanner() {
   return (
-    <SectionInViewUp className='relative flex flex-col items-center justify-center w-full h-screen antialiased'>
-      <div className='flex mx-auto mt-[150px] w-full justify-between'>
-        <div className='flex relative left-36 top-[121px] flex-col p-4'>
-          <h1 className='w-[568px] z-10 font-sans text-lg font-bold text-transparent md:text-7xl bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600'>
+    <SectionInViewUp className='relative flex flex-col items-center justify-center w-full h-screen antialiased '>
+      <div className='flex mx-auto mt-[150px] w-full justify-between max-lg:flex-col max-lg:items-center max-lg:text-center max-lg:mt-[40rem]'>
+        <div className='flex relative left-36 top-[121px] flex-col p-4 max-lg:left-0 max-lg:top-0 max-lg:items-center'>
+          <h1 className='w-[568px] z-10 font-sans text-lg font-bold text-transparent md:text-7xl bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600 max-lg:w-full'>
             Financial infrastructure for the internet
           </h1>
-          <p className='w-[28rem] mt-10 text-[#425466]'>
+          <p className='w-[28rem] mt-10 text-[#425466] max-lg:w-[90%]'>
             Millions of companies of all sizes use Stripe online and in person to accept payments, send payouts,
             automate financial processes, and ultimately grow revenue.
           </p>
-          <div className='flex items-center gap-8 mt-6'>
+          <div className='flex items-center gap-8 mt-6 max-lg:flex-col max-lg:gap-4'>
             <Button className='bg-primary rounded-2xl' iconRight={<ChevronRight />}>
               Start with Payments
             </Button>
@@ -69,7 +69,7 @@ export function BackgroundBeamsBanner() {
               Contact sales
             </Button>
           </div>
-          <div className='flex flex-wrap max-w-5xl gap-10 mt-14'>
+          <div className='flex flex-wrap justify-center max-w-5xl gap-10 mt-14'>
             {listImgArr.map((item) => (
               <div key={item.key} className='flex items-center w-56'>
                 <img src={item.img} alt='' />
@@ -77,8 +77,8 @@ export function BackgroundBeamsBanner() {
             ))}
           </div>
         </div>
-        <div>
-          <img src={backgroundBanner} alt='' className='h-[48rem] w-full' />
+        <div className='max-lg:flex max-lg:justify-center'>
+          <img src={backgroundBanner} alt='' className='h-[48rem] w-full max-lg:h-auto max-lg:w-[90%]' />
         </div>
       </div>
       <BackgroundBeams />

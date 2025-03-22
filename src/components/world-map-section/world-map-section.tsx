@@ -8,7 +8,7 @@ const textWords = 'Nothing you don’t'
 export function WorldMapSection() {
   return (
     <SectionInViewUp className='w-full py-40'>
-      <div className='mx-auto text-center max-w-7xl'>
+      <div className='mx-auto text-center max-w-7xl max-lg:mt-[20rem]'>
         <p className='text-xl font-bold text-black md:text-4xl dark:text-white'>
           Everything you need.{' '}
           <span className='text-neutral-400'>
