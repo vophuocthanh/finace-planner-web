@@ -1,21 +1,35 @@
-import { useLocation, useRoutes } from 'react-router-dom'
-import { ReactNode } from 'react'
 import LayoutMain from '@/app/layout/LayoutMain'
+import { path } from '@/core/constants/path'
+import { getAccessTokenFromLS } from '@/core/shared/storage'
+import PageNotFound from '@/pages/404/PageNotFound'
+import Dashboard from '@/pages/dashboard/Dashboard'
 import HomePage from '@/pages/home/HomePage'
 import Login from '@/pages/login/Login'
-import Register from '@/pages/register/Register'
-import Dashboard from '@/pages/dashboard/Dashboard'
-import PageNotFound from '@/pages/404/PageNotFound'
-import { path } from '@/core/constants/path'
-import { AnimatePresence, motion } from 'framer-motion'
-import PersonIncome from '@/pages/person-income/PersonIncome'
-import PersonExpense from '@/pages/person-expense/PersonExpense'
-import PersonSaving from '@/pages/person-saving/PersonSaving'
 import ManagerUser from '@/pages/manager-user/ManagerUser'
+import PersonExpense from '@/pages/person-expense/PersonExpense'
+import PersonIncome from '@/pages/person-income/PersonIncome'
+import PersonSaving from '@/pages/person-saving/PersonSaving'
+import Register from '@/pages/register/Register'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ReactNode } from 'react'
+import { Navigate, useLocation, useRoutes } from 'react-router-dom'
 
+// Interface cho route
 interface RouteConfig {
   path: string
   element: ReactNode
+  requiresAuth?: boolean // Thêm thuộc tính để đánh dấu route cần auth
+}
+
+// Hàm kiểm tra token
+const isAuthenticated = () => {
+  // Giả sử token được lưu trong localStorage
+  const token = getAccessTokenFromLS()
+  return !!token // Trả về true nếu có token, false nếu không có
+}
+
+const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  return isAuthenticated() ? <>{children}</> : <Navigate to={path.login} replace />
 }
 
 export default function useRoutesElements() {
@@ -28,42 +42,57 @@ export default function useRoutesElements() {
     {
       path: path.admin.dashboard,
       element: (
-        <LayoutMain>
-          <Dashboard />
-        </LayoutMain>
-      )
+        <ProtectedRoute>
+          <LayoutMain>
+            <Dashboard />
+          </LayoutMain>
+        </ProtectedRoute>
+      ),
+      requiresAuth: true
     },
     {
       path: path.admin.personIncome,
       element: (
-        <LayoutMain>
-          <PersonIncome />
-        </LayoutMain>
-      )
+        <ProtectedRoute>
+          <LayoutMain>
+            <PersonIncome />
+          </LayoutMain>
+        </ProtectedRoute>
+      ),
+      requiresAuth: true
     },
     {
       path: path.admin.expense,
       element: (
-        <LayoutMain>
-          <PersonExpense />
-        </LayoutMain>
-      )
+        <ProtectedRoute>
+          <LayoutMain>
+            <PersonExpense />
+          </LayoutMain>
+        </ProtectedRoute>
+      ),
+      requiresAuth: true
     },
     {
       path: path.admin.saving,
       element: (
-        <LayoutMain>
-          <PersonSaving />
-        </LayoutMain>
-      )
+        <ProtectedRoute>
+          <LayoutMain>
+            <PersonSaving />
+          </LayoutMain>
+        </ProtectedRoute>
+      ),
+      requiresAuth: true
     },
     {
       path: path.admin.manageUser,
       element: (
-        <LayoutMain>
-          <ManagerUser />
-        </LayoutMain>
-      )
+        <ProtectedRoute>
+          <LayoutMain>
+            <ManagerUser />
+          </LayoutMain>
+        </ProtectedRoute>
+      ),
+      requiresAuth: true
     },
     { path: '*', element: <PageNotFound /> }
   ]

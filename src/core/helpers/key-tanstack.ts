@@ -3,9 +3,15 @@ export const mutationKeys = {
   login: ['login'],
   updateProfile: ['updateProfile'],
   getMe: ['getMe'],
-  getPersonIncome: ['getPersonIncome'],
+  // Person Income
+  getPersonIncomes: ['getPersonIncomes'],
   getPersonIncomeById: ['getPersonIncomeById'],
   createPersonIncome: ['createPersonIncome'],
+  // Category
   getCategories: ['getCategories'],
-  getMonthly: ['getMonthly']
+  // Monthly
+  getMonthly: ['getMonthly'],
+  // Expense
+  getExpenses: ['getExpenses'],
+  getExpenseById: ['getExpenseById']
 }

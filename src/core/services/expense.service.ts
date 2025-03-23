@@ -6,7 +6,7 @@ import { FilterParams } from '@/models/interface/filter-params.interface'
 const API_EXPENSE_URL = '/expenses'
 
 export const expenseApi = {
-  getExpenses(params: FilterParams): Promise<ListResponse<ExpenseResponse>> {
+  getExpenses(params?: FilterParams): Promise<ListResponse<ExpenseResponse>> {
     return axiosClient.get(API_EXPENSE_URL, { params })
   },
   getExpenseById(id: string): Promise<ExpenseResponse> {

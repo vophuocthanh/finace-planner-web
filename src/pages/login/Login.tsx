@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { PASSWORD_TYPE, ROLE_ADMIN, ROLE_EMPLOYEE, TEXT_TYPE } from '@/configs/consts'
+import { PASSWORD_TYPE, TEXT_TYPE } from '@/configs/consts'
 import { REMEMBER_ME } from '@/core/configs/const'
 import { path } from '@/core/constants/path'
 import { handleError } from '@/core/helpers/error-handler'
@@ -15,7 +15,6 @@ import { setAccessTokenToLS, setRefreshTokenToLS, setUserToLS } from '@/core/sha
 import { LoginSchema } from '@/core/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { isEqual } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -49,8 +48,8 @@ export default function Login() {
         setAccessTokenToLS(access_token)
         setRefreshTokenToLS(refresh_token)
         setUserToLS(user)
-        navigate(isEqual(user.role, ROLE_ADMIN) || isEqual(user.role, ROLE_EMPLOYEE) ? path.admin.dashboard : path.home)
-        toast.success('Login success 🚀🚀⚡⚡!')
+        navigate(path.admin.dashboard)
+        toast.success('Login success 🚀🚀⚡⚡')
       },
       onError: (error: Error) => handleError({ error }),
       onSettled: () => {
