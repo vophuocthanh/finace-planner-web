@@ -302,7 +302,7 @@ export default function TablePersonIncome() {
       {isLoading ? (
         <LoadingCM />
       ) : (
-        <div className='border rounded-md h-[calc(100vh-238px)]'>
+        <div className='border rounded-md md:h-[calc(100vh-238px)]'>
           {data === undefined ? (
             <EmptyDocuments isNewVersion />
           ) : (
