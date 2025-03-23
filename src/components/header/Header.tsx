@@ -31,37 +31,9 @@ export default function Header() {
         }
       )}
     >
-      <img src={logo} alt='logo' className='transition-opacity duration-300 ease-in-out ' />
-      {/* <div
-        className={classNames(
-          'flex justify-center items-center gap-6 px-6 py-4 rounded-lg box-shadow bg-[#FFFFFF] transition-all duration-300 ease-in-out'
-        )}
-      >
-        <Link
-          to='/'
-          className={classNames('text-[#8987A1] hover:text-[#4E47FF] transition-colors duration-200 ease-in-out')}
-        >
-          Products
-        </Link>
-        <Link
-          to='/'
-          className={classNames('text-[#8987A1] hover:text-[#4E47FF] transition-colors duration-200 ease-in-out')}
-        >
-          Solutions
-        </Link>
-        <Link
-          to='/'
-          className={classNames('text-[#8987A1] hover:text-[#4E47FF] transition-colors duration-200 ease-in-out')}
-        >
-          Developers
-        </Link>
-        <Link
-          to='/'
-          className={classNames('text-[#8987A1] hover:text-[#4E47FF] transition-colors duration-200 ease-in-out')}
-        >
-          Pricing
-        </Link>
-      </div> */}
+      <div className='hidden md:block'>
+        <img src={logo} alt='logo' className='transition-opacity duration-300 ease-in-out ' />
+      </div>
       <Navbar />
       <div className='flex items-center gap-10 max-lg:ml-[6rem]'>
         {token ? (

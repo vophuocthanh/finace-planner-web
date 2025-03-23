@@ -2,8 +2,8 @@ import { BackgroundBeamsBanner, Footer, Header, WorldMapSection } from '@/compon
 
 const HomePage = () => {
   return (
-    <div className='relative min-h-screen'>
-      <div className='absolute z-0 gradient-background white-background' />
+    <div className='relative w-full min-h-screen'>
+      <div className='absolute z-0 w-full h-full md:gradient-background md:white-background' />
       <div className='relative z-10'>
         <Header />
         <BackgroundBeamsBanner />
