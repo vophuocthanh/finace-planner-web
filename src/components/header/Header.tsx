@@ -24,14 +24,14 @@ export default function Header() {
   return (
     <header
       className={classNames(
-        'fixed top-0 left-0 w-full flex items-center justify-between z-50 p-4 lg:px-20 transition-all duration-500 ease-in-out max-lg:justify-start',
+        'fixed top-0 left-0 w-full flex items-center justify-between z-50 p-4 lg:px-20 transition-all duration-500 ease-in-out ',
         {
           'bg-gradient-to-r from-black/40 via-black/30 to-black/20 shadow-lg': isScrolled,
           'bg-transparent shadow-none': !isScrolled
         }
       )}
     >
-      <img src={logo} alt='logo' className='transition-opacity duration-300 ease-in-out max-lg:hidden ' />
+      <img src={logo} alt='logo' className='transition-opacity duration-300 ease-in-out ' />
       {/* <div
         className={classNames(
           'flex justify-center items-center gap-6 px-6 py-4 rounded-lg box-shadow bg-[#FFFFFF] transition-all duration-300 ease-in-out'

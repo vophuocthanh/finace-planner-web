@@ -7,7 +7,7 @@ const Navbar = () => {
 
   return (
     <nav className='relative '>
-      <div className='container flex items-center justify-between px-6 py-4 mx-auto'>
+      <div className='container flex items-center justify-between px-6 py-4 mx-auto max-lg:mr-[195px]'>
         {/* Logo */}
 
         {/* Menu Desktop */}

@@ -7,10 +7,10 @@ const textWords = 'Nothing you don’t'
 
 export function WorldMapSection() {
   return (
-    <SectionInViewUp className='w-full py-40'>
-      <div className='mx-auto text-center max-w-7xl max-lg:mt-[20rem]'>
-        <p className='text-xl font-bold text-black md:text-4xl dark:text-white'>
-          Everything you need.{' '}
+    <SectionInViewUp className='w-full py-40 max-lg:flex-col max-lg:justify-center max-lg:items-center max-lg:w-[191%]'>
+      <div className='mx-auto text-center max-w-7xl max-lg:mt-[20rem] max-lg:justify-center max-lg:items-center '>
+        <p className='text-xl font-bold text-black md:text-4xl dark:text-white max-lg:flex max-lg:1items-center max-lg:justify-center'>
+          Everything you need. 1
           <span className='text-neutral-400'>
             {textWords.split('').map((char, idx) => (
               <motion.span
