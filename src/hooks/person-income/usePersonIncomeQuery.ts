@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const usePersonIncome = () => {
   const { data, isLoading, error } = useQuery({
-    queryKey: mutationKeys.getPersonIncome,
+    queryKey: mutationKeys.getPersonIncomes,
     queryFn: () => personIncomeApi.getPersonIncomes()
   })
 
@@ -28,7 +28,7 @@ export const useCreatePersonIncome = () => {
     mutationFn: (mutate: PersonIncomeRequest) => personIncomeApi.createPersonIncome(mutate),
     onSuccess: () => {
       ToastifyCommon.success('Thêm thu nhập thành công')
-      queryClient.invalidateQueries({ queryKey: mutationKeys.getPersonIncome })
+      queryClient.invalidateQueries({ queryKey: mutationKeys.getPersonIncomes })
     },
     onError: () => {
       ToastifyCommon.error('Thêm thu nhập thất bại')
@@ -44,7 +44,7 @@ export const useUpdatePersonIncome = (id: string) => {
     mutationFn: (mutate: PersonIncomeRequest) => personIncomeApi.updatePersonIncome(id, mutate),
     onSuccess: () => {
       ToastifyCommon.success('Cập nhật thu nhập thành công')
-      queryClient.invalidateQueries({ queryKey: mutationKeys.getPersonIncome })
+      queryClient.invalidateQueries({ queryKey: mutationKeys.getPersonIncomes })
     },
     onError: () => {
       ToastifyCommon.error('Cập nhật thu nhập thất bại')
@@ -60,7 +60,7 @@ export const useDeletePersonIncome = (id: string) => {
     mutationFn: () => personIncomeApi.deletePersonIncome(id),
     onSuccess: () => {
       ToastifyCommon.success('Xóa thu nhập thành công')
-      queryClient.invalidateQueries({ queryKey: mutationKeys.getPersonIncome })
+      queryClient.invalidateQueries({ queryKey: mutationKeys.getPersonIncomes })
     },
     onError: () => {
       ToastifyCommon.error('Xóa thu nhập thất bại')
