@@ -22,6 +22,7 @@ import {
   PersonIncomeResponse
 } from '@/models/interface/person-income.interface'
 import ModalAddPersonIncome from '@/pages/person-income/components/modal-add-person-income'
+import PersonIncomeFilter from '@/pages/person-income/components/person-income-filter'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -52,9 +53,30 @@ export default function TablePersonIncome() {
   const [editData, setEditData] = useState<PersonIncomeResponse | undefined>(undefined)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false)
   const [deleteId, setDeleteId] = useState<string | undefined>(undefined)
+  const [monthFilter, setMonthFilter] = useState<string>('')
+
+  const search = useMemo(() => {
+    let result = filterValue
+    if (monthFilter) {
+      result = result ? `${result} ${monthFilter}` : monthFilter
+    }
+    return result
+  }, [filterValue, monthFilter])
 
   const { mutate: deletePersonIncome } = useDeletePersonIncome(deleteId ?? '')
-  const { data: personIncome, isLoading, error } = usePersonIncome()
+  const { data: personIncome, isLoading, error } = usePersonIncome(search)
+
+  const handleFilterChange = useCallback((monthName: string) => {
+    setMonthFilter(monthName)
+    debouncedMonthSetFilter(monthName)
+  }, [])
+
+  const debouncedMonthSetFilter = useCallback(
+    debounce((value: string) => {
+      setMonthFilter(value)
+    }, 300),
+    []
+  )
 
   const handleOpenDeleteModal = useCallback((open: boolean, id?: string) => {
     setIsDeleteModalOpen(open)
@@ -227,7 +249,6 @@ export default function TablePersonIncome() {
 
   const visibleColumns = useMemo(() => table.getAllColumns().filter((column) => column.getCanHide()), [table])
 
-  if (isLoading) return <LoadingCM />
   if (error) return <EmptyDocuments isNewVersion />
 
   return (
@@ -242,76 +263,84 @@ export default function TablePersonIncome() {
           }}
           className='w-[22rem] md:max-w-sm'
         />
-        <div className='flex items-center gap-12 md:gap-4'>
-          <Button
-            iconLeft={<Plus />}
-            onClick={() => setIsAddModalOpen(true)}
-            variant='outline'
-            className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width hover:shadow-md hover:shadow-primary/50'
-          >
-            Thêm thu nhập cá nhân
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant='outline'
-                className='ml-auto border-primary text-primary hover:text-white hover:bg-primary'
-              >
-                Cột <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-              {visibleColumns.map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className='capitalize'
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+        <div className='flex flex-col items-center gap-4 mt-2 md:mt-0 md:flex-row'>
+          <PersonIncomeFilter onFilterChange={handleFilterChange} />
+          <div className='flex items-center gap-12 md:gap-4'>
+            <Button
+              iconLeft={<Plus />}
+              onClick={() => setIsAddModalOpen(true)}
+              variant='outline'
+              className='ml-auto transition-all duration-300 border-primary text-primary hover:text-white hover:bg-primary transition-width hover:shadow-md hover:shadow-primary/50'
+            >
+              Thêm thu nhập cá nhân
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant='outline'
+                  className='ml-auto border-primary text-primary hover:text-white hover:bg-primary'
                 >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  Cột <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                {visibleColumns.map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className='capitalize'
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
-      <div className='border rounded-md'>
-        {data === undefined ? (
-          <EmptyDocuments isNewVersion />
-        ) : (
-          <Table className='w-full'>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+      {isLoading ? (
+        <LoadingCM />
+      ) : (
+        <div className='border rounded-md h-[calc(100vh-238px)]'>
+          {data === undefined ? (
+            <EmptyDocuments isNewVersion />
+          ) : (
+            <Table className='w-full'>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className='h-24 text-center'>
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
-      </div>
-      <div className='flex items-center justify-end p-4 py-4 space-x-2 bg-white md:fixed md:bottom-3 md:right-6'>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className='h-24 text-center'>
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
+      )}
+
+      <div className='flex items-center justify-end p-4 py-4 space-x-2 bg-white'>
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
           selected.

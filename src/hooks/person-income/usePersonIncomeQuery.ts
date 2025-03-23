@@ -4,10 +4,10 @@ import { personIncomeApi } from '@/core/services/person-income.service'
 import { PersonIncomeRequest } from '@/models/interface/person-income.interface'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-export const usePersonIncome = () => {
+export const usePersonIncome = (search: string) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: mutationKeys.getPersonIncomes,
-    queryFn: () => personIncomeApi.getPersonIncomes()
+    queryKey: [...mutationKeys.getPersonIncomes, search],
+    queryFn: () => personIncomeApi.getPersonIncomes({ search })
   })
 
   return { data, isLoading, error }
