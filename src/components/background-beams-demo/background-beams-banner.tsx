@@ -1,87 +1,115 @@
-import {
-  avatarAmazon,
-  avatarBmw,
-  avatarGoogle,
-  avatarMarriot,
-  avatarSalesForte,
-  avatarShopify,
-  avatarWhatApp,
-  avatarZara,
-  backgroundBanner
-} from '@/assets/images'
+import { backgroundBanner } from '@/assets/images'
 import { Button } from '@/components/ui/button'
-import { ChevronRight } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
 import { BackgroundBeams } from '../ui/background-beams'
-import SectionInViewUp from '@/components/animation/SectionInViewUp'
+import { partnerLogos } from '@/_mock/data-partner-logo.mock'
 
-const listImgArr = [
-  {
-    key: 1,
-    img: avatarAmazon
-  },
-  {
-    key: 2,
-    img: avatarSalesForte
-  },
-  {
-    key: 3,
-    img: avatarGoogle
-  },
-  {
-    key: 4,
-    img: avatarZara
-  },
-  {
-    key: 5,
-    img: avatarShopify
-  },
-  {
-    key: 6,
-    img: avatarWhatApp
-  },
-  {
-    key: 7,
-    img: avatarBmw
-  },
-  {
-    key: 8,
-    img: avatarMarriot
+export interface PartnerLogo {
+  id: number
+  img: string
+  alt: string
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
   }
-]
+}
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5 }
+  }
+}
 
 export function BackgroundBeamsBanner() {
   return (
-    <SectionInViewUp className='relative flex flex-col items-center justify-center w-full h-screen antialiased '>
-      <div className='flex mx-auto mt-[150px] w-full justify-between max-lg:flex-col max-lg:items-center max-lg:text-center max-lg:mt-[40rem]'>
-        <div className='flex relative left-36 top-[121px] flex-col p-4  max-lg:top-0 max-lg:items-center max-lg:w-full'>
-          <h1 className='w-[568px] z-10 font-sans text-lg font-bold text-transparent md:text-7xl bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600  max-lg:justify-center max-lg:text-2xl'>
-            Financial infrastructure for the internet
-          </h1>
-          <p className='w-[28rem] mt-10 text-[#425466] '>
-            Millions of companies of all sizes use Stripe online and in person to accept payments, send payouts,
-            automate financial processes, and ultimately grow revenue.
-          </p>
-          <div className='flex items-center gap-8 mt-6 max-lg:flex-col max-lg:gap-4'>
-            <Button className='bg-primary rounded-2xl' iconRight={<ChevronRight />}>
-              Start with Payments
-            </Button>
-            <Button className='bg-white text-[#0A2540] rounded-2xl' iconRight={<ChevronRight />}>
-              Contact sales
-            </Button>
-          </div>
-          <div className='flex flex-wrap justify-center max-w-5xl gap-10 mt-14'>
-            {listImgArr.map((item) => (
-              <div key={item.key} className='flex items-center justify-between w-56'>
-                <img src={item.img} alt='' />
+    <div className='relative w-full min-h-screen overflow-hidden'>
+      <div className='absolute inset-0 z-0 bg-white' />
+      <div className='relative z-10 px-4 pt-32 pb-20 mx-auto max-w-7xl sm:px-6 lg:px-8'>
+        <div className='grid items-center grid-cols-1 gap-12 lg:grid-cols-2'>
+          <motion.div
+            initial='hidden'
+            animate='visible'
+            variants={containerVariants}
+            className='flex flex-col space-y-8'
+          >
+            <motion.h1
+              variants={itemVariants}
+              className='text-4xl font-bold text-transparent md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600'
+            >
+              Financial infrastructure for the internet
+            </motion.h1>
+
+            <motion.p variants={itemVariants} className='text-lg text-[#425466] max-w-lg'>
+              Millions of companies use our platform to accept payments, send payouts, and automate financial processes
+              to grow revenue.
+            </motion.p>
+
+            <motion.div variants={itemVariants} className='flex flex-wrap gap-4'>
+              <Button
+                className='flex items-center gap-2 px-6 py-6 text-white transition-all duration-300 rounded-full bg-primary hover:shadow-lg'
+                onClick={() => {}}
+              >
+                <span>Start with Payments</span>
+                <ArrowRight size={18} />
+              </Button>
+
+              <Button
+                className='bg-white text-[#0A2540] rounded-full px-6 py-6 flex items-center gap-2 hover:shadow-lg transition-all duration-300'
+                onClick={() => {}}
+              >
+                <span>Contact sales</span>
+                <ArrowRight size={18} />
+              </Button>
+            </motion.div>
+
+            <motion.div variants={itemVariants} className='pt-12'>
+              <motion.p variants={itemVariants} className='text-sm text-[#425466] mb-6'>
+                Trusted by leading companies worldwide
+              </motion.p>
+
+              <div className='grid grid-cols-2 gap-8 sm:grid-cols-4'>
+                {partnerLogos.map((logo) => (
+                  <motion.div key={logo.id} whileHover={{ scale: 1.05 }} className='flex items-center justify-center'>
+                    <img src={logo.img} alt={logo.alt} className='w-auto max-h-10' />
+                  </motion.div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-        <div className='max-lg:flex max-lg:justify-center max-lg:hidden'>
-          <img src={backgroundBanner} alt='' className='h-[48rem] w-full max-lg:h-auto max-lg:w-[90%]' />
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className='hidden lg:block'
+          >
+            <motion.img
+              src={backgroundBanner}
+              alt='Financial Dashboard'
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatType: 'reverse',
+                ease: 'easeInOut'
+              }}
+            />
+          </motion.div>
         </div>
       </div>
+
       <BackgroundBeams />
-    </SectionInViewUp>
+    </div>
   )
 }

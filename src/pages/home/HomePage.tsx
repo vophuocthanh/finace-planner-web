@@ -1,16 +1,25 @@
-import { BackgroundBeamsBanner, Footer, Header, WorldMapSection } from '@/components'
+import { Footer, Header, TestimonialsSection, WorldMapSection } from '@/components'
+import { BackgroundBeamsBanner } from '@/components/background-beams-demo/background-beams-banner'
+import { motion } from 'framer-motion'
 
 const HomePage = () => {
   return (
-    <div className='relative w-full min-h-screen'>
-      <div className='absolute z-0 w-full h-full md:gradient-background md:white-background' />
-      <div className='relative z-10'>
-        <Header />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className='relative w-full min-h-screen overflow-x-hidden bg-white'
+    >
+      <Header />
+
+      <main>
         <BackgroundBeamsBanner />
         <WorldMapSection />
-        <Footer />
-      </div>
-    </div>
+        <TestimonialsSection />
+      </main>
+
+      <Footer />
+    </motion.div>
   )
 }
 
