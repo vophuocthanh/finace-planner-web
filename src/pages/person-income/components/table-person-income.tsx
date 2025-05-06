@@ -252,7 +252,7 @@ export default function TablePersonIncome() {
   if (error) return <EmptyDocuments isNewVersion />
 
   return (
-    <div className='w-full md:h-[calc(100vh-83px)] p-4 bg-white rounded-md shadow-md'>
+    <div className='w-full md:h-[calc(100vh-104px)] p-4 bg-white rounded-md shadow-md'>
       <div className='flex flex-col items-center gap-2 py-4 md:justify-between md:flex-row'>
         <Input
           placeholder='Tìm kiếm theo mô tả...'
@@ -302,7 +302,7 @@ export default function TablePersonIncome() {
       {isLoading ? (
         <LoadingCM />
       ) : (
-        <div className='border rounded-md md:h-[calc(100vh-238px)]'>
+        <div className='border rounded-md md:h-[calc(100vh-258px)]'>
           {data === undefined ? (
             <EmptyDocuments isNewVersion />
           ) : (
@@ -340,7 +340,7 @@ export default function TablePersonIncome() {
         </div>
       )}
 
-      <div className='flex items-center justify-end p-4 py-4 space-x-2 bg-white'>
+      <div className='flex items-center justify-end p-4 pt-4 space-x-2 bg-white'>
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
           selected.
