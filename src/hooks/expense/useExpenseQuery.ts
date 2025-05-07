@@ -1,5 +1,6 @@
 import { handleError } from '@/core/helpers/error-handler'
 import { mutationKeys } from '@/core/helpers/key-tanstack'
+import ToastifyCommon from '@/core/helpers/toastify-common'
 import { expenseApi } from '@/core/services/expense.service'
 import { getAccessTokenFromLS } from '@/core/shared/storage'
 import { ExpenseRequest } from '@/models/interface/expense.interface'
@@ -64,6 +65,7 @@ export const useDeleteExpenseMutation = (id: string) => {
   const { mutate, isPending, error } = useMutation({
     mutationFn: () => expenseApi.deleteExpense(id),
     onSuccess: () => {
+      ToastifyCommon.success('Xóa chi tiêu thành công')
       queryClient.invalidateQueries({ queryKey: mutationKeys.getExpenses })
     },
     onError: (error) => {

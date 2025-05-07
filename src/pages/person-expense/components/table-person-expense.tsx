@@ -161,7 +161,7 @@ export default function TablePersonExpense() {
       cell: memo(
         ({ row }) => {
           const category = row.getValue('category') as CategoryPersonIncomeResponse
-          return <div className='font-medium'>{category?.name}</div>
+          return <div className='w-72 md:w-40 font-medium'>{category?.name}</div>
         },
         (prev, next) => isEqual(prev.row.getValue('category'), next.row.getValue('category'))
       )
@@ -227,11 +227,12 @@ export default function TablePersonExpense() {
 
   const visibleColumns = useMemo(() => table.getAllColumns().filter((column) => column.getCanHide()), [table])
 
-  if (isLoading) return <LoadingCM />
+  // if (isLoading) return <LoadingCM />
   if (error) return <EmptyDocuments isNewVersion />
 
   return (
     <div className='w-full md:h-[calc(100vh-104px)] p-4 bg-white rounded-md shadow-md'>
+      <h1 className='text-2xl font-bold'>Chi tiêu cá nhân</h1>
       <div className='flex flex-col items-center gap-2 py-4 md:justify-between md:flex-row'>
         <Input
           placeholder='Tìm kiếm theo mô tả...'
@@ -275,42 +276,46 @@ export default function TablePersonExpense() {
           </DropdownMenu>
         </div>
       </div>
-      <div className='border rounded-md'>
-        {data === undefined ? (
-          <EmptyDocuments isNewVersion />
-        ) : (
-          <Table className='w-full'>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+      {isLoading ? (
+        <LoadingCM />
+      ) : (
+        <div className='border rounded-md'>
+          {data === undefined ? (
+            <EmptyDocuments isNewVersion />
+          ) : (
+            <Table className='w-full'>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className='h-24 text-center'>
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className='h-24 text-center'>
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
+      )}
       <div className='flex items-center justify-end p-4 pt-4 space-x-2 bg-white md:fixed md:bottom-6 md:right-6'>
         <div className='flex-1 text-sm text-muted-foreground'>
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)

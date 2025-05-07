@@ -1,3 +1,9 @@
+import TableManagerUser from './components/table-manager-user'
+
 export default function ManagerUser() {
-  return <div>ManagerUser</div>
+  return (
+    <div className='w-full'>
+      <TableManagerUser />
+    </div>
+  )
 }

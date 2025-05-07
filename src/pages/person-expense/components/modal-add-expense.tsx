@@ -6,6 +6,7 @@ import { InputNumber } from '@/components/ui/input-number'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { numberConstants } from '@/configs/consts'
 import { handleError } from '@/core/helpers/error-handler'
+import ToastifyCommon from '@/core/helpers/toastify-common'
 import { ExpenseSchema } from '@/core/zod/expense.zod'
 import { useCategories } from '@/hooks/categories/useCategoriesQuery'
 import { useCreateExpenseMutation, useUpdateExpenseMutation } from '@/hooks/expense/useExpenseQuery'
@@ -43,8 +44,8 @@ export default function ModalAddPersonExpense({
     enabled: isMonthlyOpen || isEditMode
   })
 
-  const { mutate: mutation } = useCreateExpenseMutation()
-  const { mutate: updateMutation } = useUpdateExpenseMutation(id || '')
+  const { mutate: mutationCreate } = useCreateExpenseMutation()
+  const { mutate: mutationUpdate } = useUpdateExpenseMutation(id || '')
 
   const form = useForm<z.infer<typeof ExpenseSchema>>({
     resolver: zodResolver(ExpenseSchema),
@@ -76,10 +77,11 @@ export default function ModalAddPersonExpense({
       amount: Number(values.amount)
     }
     if (isEditMode) {
-      updateMutation(payload, {
+      mutationUpdate(payload, {
         onSuccess: () => {
           setIsLoading(false)
           onOpenChange(false)
+          ToastifyCommon.success('Sửa chi tiêu thành công')
           form.reset()
         },
         onError: (error) => handleError({ error }),
@@ -88,10 +90,11 @@ export default function ModalAddPersonExpense({
         }
       })
     } else {
-      mutation(payload, {
+      mutationCreate(payload, {
         onSuccess: () => {
           setIsLoading(false)
           onOpenChange(false)
+          ToastifyCommon.success('Thêm chi tiêu thành công')
           form.reset()
         },
         onError: (error) => handleError({ error }),

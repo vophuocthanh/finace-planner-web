@@ -253,6 +253,7 @@ export default function TablePersonIncome() {
 
   return (
     <div className='w-full md:h-[calc(100vh-104px)] p-4 bg-white rounded-md shadow-md'>
+      <h1 className='text-2xl font-bold'>Thu nhập cá nhân</h1>
       <div className='flex flex-col items-center gap-2 py-4 md:justify-between md:flex-row'>
         <Input
           placeholder='Tìm kiếm theo mô tả...'

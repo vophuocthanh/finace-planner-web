@@ -8,3 +8,17 @@ export const useGetMe = () => {
     queryFn: () => userApi.getUserMe()
   })
 }
+
+export const useGetUser = () => {
+  return useQuery({
+    queryKey: mutationKeys.getUsers,
+    queryFn: () => userApi.getUsers()
+  })
+}
+
+export const useGetUserById = (id: string) => {
+  return useQuery({
+    queryKey: mutationKeys.getUserById,
+    queryFn: () => userApi.getUserById(id)
+  })
+}

@@ -8,11 +8,14 @@ const API_USER_ME_URL = `${API_USER_URL}/me`
 const API_ROLE_URL = '/role'
 
 export const userApi = {
-  getUsers(params: FilterParams): Promise<ListResponse<UserResponse>> {
+  getUsers(params?: FilterParams): Promise<ListResponse<UserResponse>> {
     return axiosClient.get(API_USER_URL, { params })
   },
   getUserMe(): Promise<UserResponse> {
     return axiosClient.get(API_USER_ME_URL)
+  },
+  getUserById(id: string): Promise<UserResponse> {
+    return axiosClient.get(`${API_USER_URL}/${id}`)
   },
   updateUserMe(params: Partial<UserRequest>): Promise<UserResponse> {
     return axiosClient.put(API_USER_ME_URL, params)

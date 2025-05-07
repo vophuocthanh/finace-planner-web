@@ -1,10 +1,9 @@
 import Sidebar from '@/app/layout/side-bar'
-import { ReactNode, useState, useRef, useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import useToggleSideBar from '@/core/store'
 import classNames from 'classnames'
-import { LogOut, Settings, User } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { LogOut } from 'lucide-react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 
 interface ILayoutMainProps {
   children: ReactNode
@@ -73,32 +72,10 @@ const LayoutMain = ({ children }: ILayoutMainProps) => {
                       'right-0 w-48 max-md:right-0'
                     )}
                   >
-                    <div className='px-4 py-3 border-b border-gray-100'>
-                      <p className='text-sm font-medium'>User Account</p>
-                      <p className='text-xs text-gray-500'>user@example.com</p>
-                    </div>
-                    <div className='py-1'>
-                      <Link
-                        to='/profile'
-                        className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
-                      >
-                        <User size={16} className='text-gray-500' />
-                        <span>Profile</span>
-                      </Link>
-                      <Link
-                        to='/settings'
-                        className='flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
-                      >
-                        <Settings size={16} className='text-gray-500' />
-                        <span>Settings</span>
-                      </Link>
-                    </div>
-                    <div className='mt-1 border-t border-gray-100'>
-                      <button className='flex items-center w-full gap-2 px-4 py-2 text-sm text-left text-red-600 hover:bg-red-50'>
-                        <LogOut size={16} />
-                        <span>Log out</span>
-                      </button>
-                    </div>
+                    <button className='flex items-center w-full gap-2 px-4 py-2 text-sm text-left text-red-600 hover:bg-red-50'>
+                      <LogOut size={16} />
+                      <span>Log out</span>
+                    </button>
                   </div>
                 )}
               </div>
