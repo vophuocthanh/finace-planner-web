@@ -1,13 +1,42 @@
+import toastifyCommon from '@/core/helpers/toastify-common'
 import { AxiosError } from 'axios'
-import { toast } from 'react-toastify'
 
-type ErrorHandlerOptions = {
-  error: Error
-  defaultMessage?: string
+interface ErrorResponse {
+  message: string
+  statusCode?: number
 }
 
-export function handleError({ error, defaultMessage = 'Something went wrong!' }: ErrorHandlerOptions) {
-  const axiosError = error as AxiosError<{ message: string }>
-  const errorMessage = axiosError?.response?.data?.message || defaultMessage
-  toast.error(errorMessage)
+export const handleError = (error: unknown, defaultMessage = 'Something went wrong') => {
+  if (error instanceof AxiosError) {
+    const errorMessage = error.response?.data?.message || error.message || defaultMessage
+    toastifyCommon.error(errorMessage)
+    return errorMessage
+  }
+
+  if (error instanceof Error) {
+    toastifyCommon.error(error.message || defaultMessage)
+    return error.message || defaultMessage
+  }
+
+  toastifyCommon.error(defaultMessage)
+  return defaultMessage
+}
+
+export const handleApiError = (error: unknown): ErrorResponse => {
+  if (error instanceof AxiosError) {
+    return {
+      message: error.response?.data?.message || error.message || 'Something went wrong',
+      statusCode: error.response?.status
+    }
+  }
+
+  if (error instanceof Error) {
+    return {
+      message: error.message || 'Something went wrong'
+    }
+  }
+
+  return {
+    message: 'Something went wrong'
+  }
 }

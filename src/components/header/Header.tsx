@@ -1,11 +1,14 @@
 import { logo } from '@/assets/images'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, LogOut, User, Settings, CreditCard } from 'lucide-react'
-import { cn } from '@/core/lib/utils'
-import { getAccessTokenFromLS, removeAccessTokenFromLS } from '@/core/shared/storage'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import toastifyCommon from '@/core/helpers/toastify-common'
+import { cn } from '@/core/lib/utils'
+import { authApi } from '@/core/services/auth.service'
+import { clearLS, getAccessTokenFromLS, getRefreshTokenFromLS } from '@/core/shared/storage'
+import { useMutation } from '@tanstack/react-query'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronDown, CreditCard, LogOut, Menu, Settings, User, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const navItems = [
   { title: 'Products', href: '/' },
@@ -18,7 +21,13 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const token = getAccessTokenFromLS()
-  const navigate = useNavigate()
+  const { mutate: logout } = useMutation({
+    mutationFn: () => authApi.logout(getRefreshTokenFromLS()),
+    onSuccess: () => {
+      toastifyCommon.success('Logout successfully')
+      clearLS()
+    }
+  })
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,9 +42,7 @@ export default function Header() {
   const toggleMenu = () => setIsOpen(!isOpen)
 
   const handleLogout = () => {
-    removeAccessTokenFromLS()
-    navigate('/')
-    window.location.reload()
+    logout()
   }
 
   return (

@@ -8,6 +8,9 @@ export const path = {
   forgotPassword: '/forgot-password',
   blog: '/blog',
   profile: '/profile',
+  pageNotFound: '*',
+  verifyEmail: '/verify-email',
+  resetPassword: '/reset-password',
 
   // Admin routes
   admin: {

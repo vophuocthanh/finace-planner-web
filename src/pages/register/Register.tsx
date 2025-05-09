@@ -1,5 +1,5 @@
 import { IconEye, IconNonEye } from '@/assets/icons'
-import { BannerRegister } from '@/assets/images'
+import { logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -7,16 +7,37 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PASSWORD_TYPE, TEXT_TYPE } from '@/configs/consts'
 import { path } from '@/core/constants/path'
+import { handleError } from '@/core/helpers/error-handler'
 import { mutationKeys } from '@/core/helpers/key-tanstack'
+import toastifyCommon from '@/core/helpers/toastify-common'
 import { authApi } from '@/core/services/auth.service'
 import { RegisterSchema } from '@/core/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5 }
+  }
+}
 
 export default function Register() {
   const navigate = useNavigate()
@@ -38,12 +59,12 @@ export default function Register() {
   const mutationRegister = useMutation({
     mutationKey: mutationKeys.register,
     mutationFn: (data: z.infer<typeof RegisterSchema>) => authApi.register(data),
-    onSuccess: () => {
-      navigate('/login')
-      toast.success('Register success 🚀🚀⚡⚡')
+    onSuccess: (_, variables) => {
+      navigate('/verify-email', { state: { email: variables.email } })
+      toastifyCommon.success('Registration successful! Please verify your email 🚀')
     },
-    onError: () => {
-      toast.error('Register failed!')
+    onError: (error) => {
+      handleError(error)
     },
     onSettled: () => {
       setIsLoading(false)
@@ -59,40 +80,75 @@ export default function Register() {
   const toggleConfirmPasswordVisibility = () => setIsConfirmPasswordVisible((prev) => !prev)
 
   return (
-    <div className='flex justify-center w-full h-screen'>
-      <div className='items-center justify-center hidden w-full md:flex'>
-        <img src={BannerRegister} alt='' className='my-10 rounded-lg ml-44' />
-      </div>
-      <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem] md:ml-80 md:mr-[8rem] '>
-        <div className='flex flex-col items-center w-full space-y-2 md:items-start'>
-          <h1 className='text-5xl font-semibold'>Register</h1>
-          <p className='text-sm text-[#112211] text-center md:text-left px-10 md:px-0'>
-            Let’s get you all st up so you can access your personal account.
-          </p>
+    <div className='flex justify-center w-full min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50'>
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+        className='items-center justify-center hidden w-full md:flex'
+      >
+        <img
+          src='https://img.freepik.com/free-vector/personal-finance-concept-illustration_114360-7720.jpg'
+          alt='Personal Finance'
+          className='my-10 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300 ml-44'
+        />
+      </motion.div>
+      <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem] md:ml-80 md:mr-[8rem]'>
+        <motion.div
+          initial='hidden'
+          animate='visible'
+          variants={containerVariants}
+          className='flex flex-col items-center w-full space-y-2 md:items-start'
+        >
+          <motion.div variants={itemVariants} className='w-40 mb-10'>
+            <Link to='/'>
+              <img src={logo} alt='logo' className='object-cover w-full h-full' />
+            </Link>
+          </motion.div>
+          <motion.h1
+            variants={itemVariants}
+            className='text-5xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent'
+          >
+            Create Account
+          </motion.h1>
+          <motion.p variants={itemVariants} className='text-sm text-gray-600 text-center md:text-left px-10 md:px-0'>
+            Let's get you all set up so you can access your personal account.
+          </motion.p>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleRegister)} className='w-10/12 space-y-6 md:w-2/3'>
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Nhập email' type='email' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className='flex flex-col w-full gap-6 md:flex-row'>
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-gray-700'>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Enter your email'
+                          type='email'
+                          {...field}
+                          className='transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+              <motion.div variants={itemVariants} className='flex flex-col w-full gap-6 md:flex-row'>
                 <FormField
                   control={form.control}
                   name='name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel className='text-gray-700'>Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder='Nhập name' {...field} className='w-full' />
+                        <Input
+                          placeholder='Enter your name'
+                          {...field}
+                          className='w-full transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -103,80 +159,97 @@ export default function Register() {
                   name='phone'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel className='text-gray-700'>Phone Number</FormLabel>
                       <FormControl>
-                        <Input placeholder='Nhập phone number' {...field} className='w-full' maxLength={10} />
+                        <Input
+                          placeholder='Enter your phone number'
+                          {...field}
+                          className='w-full transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                          maxLength={10}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
-              <FormField
-                control={form.control}
-                name={PASSWORD_TYPE}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Nhập password'
-                        className='w-full'
-                        type={isPasswordVisible ? TEXT_TYPE : PASSWORD_TYPE}
-                        {...field}
-                        icon={isPasswordVisible ? <IconNonEye /> : <IconEye />}
-                        iconOnClick={togglePasswordVisibility}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='confirmPassword'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Nhập confirm password'
-                        className='w-full'
-                        type={isConfirmPasswordVisible ? TEXT_TYPE : PASSWORD_TYPE}
-                        {...field}
-                        icon={isConfirmPasswordVisible ? <IconNonEye /> : <IconEye />}
-                        iconOnClick={toggleConfirmPasswordVisibility}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className='flex justify-between'>
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name={PASSWORD_TYPE}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-gray-700'>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Enter your password'
+                          className='w-full transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                          type={isPasswordVisible ? TEXT_TYPE : PASSWORD_TYPE}
+                          {...field}
+                          icon={isPasswordVisible ? <IconNonEye /> : <IconEye />}
+                          iconOnClick={togglePasswordVisibility}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name='confirmPassword'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-gray-700'>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Confirm your password'
+                          className='w-full transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                          type={isConfirmPasswordVisible ? TEXT_TYPE : PASSWORD_TYPE}
+                          {...field}
+                          icon={isConfirmPasswordVisible ? <IconNonEye /> : <IconEye />}
+                          iconOnClick={toggleConfirmPasswordVisibility}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+              <motion.div variants={itemVariants} className='flex justify-between'>
                 <div className='flex items-center justify-center space-x-2'>
-                  <Checkbox id='terms' className='w-4 h-4' />
-                  <Label htmlFor='terms' className='mt-6 text-base font-normal text-gray-500 cursor-pointer md:mt-0'>
-                    I agree to all the <span className='text-redCustom'>Terms</span> and{' '}
-                    <span className='text-redCustom'>Privacy Policies</span>
+                  <Checkbox
+                    id='terms'
+                    className='w-4 h-4 transition-colors duration-300 border-gray-300 rounded focus:ring-indigo-500'
+                  />
+                  <Label htmlFor='terms' className='text-base font-normal text-gray-600 cursor-pointer'>
+                    I agree to all the <span className='text-indigo-600'>Terms</span> and{' '}
+                    <span className='text-indigo-600'>Privacy Policies</span>
                   </Label>
                 </div>
-              </div>
-              <Button
-                loading={isLoading}
-                className='w-full text-white bg-[#4E47FF] hover:bg-[#4E47FF] hover:shadow-lg'
-                type='submit'
-              >
-                Create Account
-              </Button>
-              <p className='flex items-center justify-center'>
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <Button
+                  loading={isLoading}
+                  className='w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl'
+                  type='submit'
+                >
+                  Create Account
+                </Button>
+              </motion.div>
+              <motion.p variants={itemVariants} className='flex items-center justify-center text-gray-600'>
                 Already have an account?&nbsp;
-                <Link to={path.login} className='cursor-pointer hover:underline text-primary'>
-                  Login
+                <Link
+                  to={path.login}
+                  className='text-indigo-600 hover:text-indigo-700 hover:underline transition-colors duration-300'
+                >
+                  Sign in
                 </Link>
-              </p>
+              </motion.p>
             </form>
           </Form>
-        </div>
+        </motion.div>
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ import PersonExpense from '@/pages/person-expense/PersonExpense'
 import PersonIncome from '@/pages/person-income/PersonIncome'
 import PersonSaving from '@/pages/person-saving/PersonSaving'
 import Register from '@/pages/register/Register'
+import VerifyEmail from '@/pages/verify-email/VerifyEmail'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ReactNode } from 'react'
 import { Navigate, useLocation, useRoutes } from 'react-router-dom'
@@ -39,6 +40,7 @@ export default function useRoutesElements() {
     { path: path.home, element: <HomePage /> },
     { path: path.login, element: <Login /> },
     { path: path.register, element: <Register /> },
+    { path: path.verifyEmail, element: <VerifyEmail /> },
     {
       path: path.admin.dashboard,
       element: (
@@ -94,7 +96,7 @@ export default function useRoutesElements() {
       ),
       requiresAuth: true
     },
-    { path: '*', element: <PageNotFound /> }
+    { path: path.pageNotFound, element: <PageNotFound /> }
   ]
 
   const routeElements = useRoutes(routes, location)

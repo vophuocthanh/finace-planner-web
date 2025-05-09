@@ -1,24 +1,40 @@
 // define the Login interface
 export interface LoginResponse {
-  user: { id: string; name: string; email: string; role: string }
   access_token: string
   refresh_token: string
+  user: User
 }
 
 // define the Account interface
 export interface Account {
-  email?: string
-  password?: string
-  confirmPassword?: string
+  email: string
+  password: string
   name?: string
   phone?: string
+  confirmPassword?: string
 }
 
 // define the RegisterReponse interface
 export interface RegisterReponse {
-  name: string
+  message: string
+}
+
+export interface VerifyEmailReq {
   email: string
-  password: string
-  confirmPassword: string
-  phone?: string
+  verificationCode: string
+}
+
+export interface VerifyEmailRes {
+  message: string
+}
+
+export interface User {
+  id: string
+  email: string
+  name: string
+  phone: string
+  role: string
+  isVerified: boolean
+  createdAt: string
+  updatedAt: string
 }

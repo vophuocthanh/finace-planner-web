@@ -1,5 +1,5 @@
 import { FacebookIcons1, GoogleIcons, IconEye, IconNonEye } from '@/assets/icons'
-import { BannerLogin, logo } from '@/assets/images'
+import { logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -10,16 +10,36 @@ import { REMEMBER_ME } from '@/core/configs/const'
 import { path } from '@/core/constants/path'
 import { handleError } from '@/core/helpers/error-handler'
 import { mutationKeys } from '@/core/helpers/key-tanstack'
+import toastifyCommon from '@/core/helpers/toastify-common'
 import { authApi } from '@/core/services/auth.service'
 import { setAccessTokenToLS, setRefreshTokenToLS, setUserToLS } from '@/core/shared/storage'
 import { LoginSchema } from '@/core/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5 }
+  }
+}
 
 export default function Login() {
   const navigate = useNavigate()
@@ -49,9 +69,9 @@ export default function Login() {
         setRefreshTokenToLS(refresh_token)
         setUserToLS(user)
         navigate(path.admin.dashboard)
-        toast.success('Login success 🚀🚀⚡⚡')
+        toastifyCommon.success('Login success 🚀🚀⚡⚡')
       },
-      onError: (error: Error) => handleError({ error }),
+      onError: (error: Error) => handleError(error),
       onSettled: () => {
         setIsLoading(false)
       }
@@ -75,101 +95,144 @@ export default function Login() {
   }, [form, rememberMe])
 
   return (
-    <div className='flex justify-center w-full h-screen overflow-hidden '>
-      <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem] mb-[10rem] md:ml-[10rem]'>
-        <div className='flex flex-col justify-center items-center md:items-start w-full md:ml-32 space-y-2 mt-[4rem]'>
-          <Link to='/' className='w-40 mb-10'>
-            <img src={logo} alt='logo' className='object-cover w-full h-full' />
-          </Link>
-          <h1 className='text-5xl font-semibold'>Login</h1>
-          <p className='text-sm text-[#112211]'>Login to access your account</p>
+    <div className='flex justify-center w-full min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50'>
+      <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem]'>
+        <motion.div
+          initial='hidden'
+          animate='visible'
+          variants={containerVariants}
+          className='flex flex-col justify-center items-center md:items-start w-full md:ml-32 space-y-2 mt-[4rem]'
+        >
+          <motion.div variants={itemVariants} className='w-40 mb-10'>
+            <Link to='/'>
+              <img src={logo} alt='logo' className='object-cover w-full h-full' />
+            </Link>
+          </motion.div>
+          <motion.h1
+            variants={itemVariants}
+            className='text-5xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent'
+          >
+            Welcome Back
+          </motion.h1>
+          <motion.p variants={itemVariants} className='text-sm text-gray-600'>
+            Login to access your account
+          </motion.p>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-10/12 space-y-6 md:w-2/3'>
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='Nhập email' type='email' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='Nhập password'
-                        className='w-full'
-                        type={isPasswordVisible ? TEXT_TYPE : PASSWORD_TYPE}
-                        {...field}
-                        icon={isPasswordVisible ? <IconNonEye /> : <IconEye />}
-                        iconOnClick={togglePasswordVisibility}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className='flex justify-between'>
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-gray-700'>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Enter your email'
+                          type='email'
+                          {...field}
+                          className='transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name='password'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-gray-700'>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Enter your password'
+                          className='w-full transition-all duration-300 focus:ring-2 focus:ring-indigo-500'
+                          type={isPasswordVisible ? TEXT_TYPE : PASSWORD_TYPE}
+                          {...field}
+                          icon={isPasswordVisible ? <IconNonEye /> : <IconEye />}
+                          iconOnClick={togglePasswordVisibility}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+              <motion.div variants={itemVariants} className='flex justify-between'>
                 <div className='flex items-center justify-center space-x-2'>
                   <Checkbox
                     id='terms'
-                    className='w-4 h-4'
+                    className='w-4 h-4 transition-colors duration-300 border-gray-300 rounded focus:ring-indigo-500'
                     onChange={(e) => handleChangeRememberMe((e.target as HTMLInputElement).checked)}
                     checked={rememberMe}
                   />
-                  <Label htmlFor='terms' className='text-base font-normal text-gray-500 cursor-pointer'>
+                  <Label htmlFor='terms' className='text-base font-normal text-gray-600 cursor-pointer'>
                     Remember me
                   </Label>
                 </div>
-                <Link to={path.forgotPassword} className='text-primary hover:underline'>
-                  Forgot Password
+                <Link
+                  to={path.forgotPassword}
+                  className='text-indigo-600 hover:text-indigo-700 hover:underline transition-colors duration-300'
+                >
+                  Forgot Password?
                 </Link>
-              </div>
+              </motion.div>
 
-              <Button
-                loading={isLoading}
-                className='w-full text-white bg-[#4E47FF] hover:bg-[#4E47FF] hover:shadow-lg'
-                type='submit'
-              >
-                Login
-              </Button>
+              <motion.div variants={itemVariants}>
+                <Button
+                  loading={isLoading}
+                  className='w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl'
+                  type='submit'
+                >
+                  Sign In
+                </Button>
+              </motion.div>
 
-              <div className='flex items-center'>
-                <div className='flex-1 border-t border-gray-400'></div>
-                <span className='px-3 font-medium text-gray-600'>or</span>
-                <div className='flex-1 border-t border-gray-400'></div>
-              </div>
+              <motion.div variants={itemVariants} className='flex items-center'>
+                <div className='flex-1 border-t border-gray-300'></div>
+                <span className='px-3 font-medium text-gray-500'>or</span>
+                <div className='flex-1 border-t border-gray-300'></div>
+              </motion.div>
 
-              <Button className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'>
-                <img src={GoogleIcons} alt='Facebook' className='w-8 h-8 p-1 rounded-full' />
-                Sign in with Google
-              </Button>
-              <Button className='w-full text-[#313957] bg-[#F3F9FA] hover:bg-[#D1E0E3] hover:shadow-lg'>
-                <img src={FacebookIcons1} alt='Facebook' className='w-8 h-8 p-1 rounded-full' />
-                Sign in with Facebook
-              </Button>
-              <p className='flex items-center justify-center'>
-                Don’t have an account?&nbsp;
-                <Link to='/register' className='cursor-pointer text-primary hover:underline'>
+              <motion.div variants={itemVariants} className='space-y-3'>
+                <Button className='w-full text-gray-700 bg-white hover:bg-gray-50 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200'>
+                  <img src={GoogleIcons} alt='Google' className='w-6 h-6 mr-2' />
+                  Continue with Google
+                </Button>
+                <Button className='w-full text-gray-700 bg-white hover:bg-gray-50 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200'>
+                  <img src={FacebookIcons1} alt='Facebook' className='w-6 h-6 mr-2' />
+                  Continue with Facebook
+                </Button>
+              </motion.div>
+
+              <motion.p variants={itemVariants} className='flex items-center justify-center text-gray-600'>
+                Don't have an account?&nbsp;
+                <Link
+                  to='/register'
+                  className='text-indigo-600 hover:text-indigo-700 hover:underline transition-colors duration-300'
+                >
                   Sign up
                 </Link>
-              </p>
+              </motion.p>
             </form>
           </Form>
-        </div>
+        </motion.div>
       </div>
-      <div className='hidden w-full pr-[8rem] md:flex justify-center items-center'>
-        <img src={BannerLogin} alt='' className='my-10 rounded-lg' />
-      </div>
+      <motion.div
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+        className='hidden w-full pr-[8rem] md:flex justify-center items-center'
+      >
+        <img
+          src='https://img.freepik.com/free-vector/finance-management-concept-illustration_114360-1233.jpg'
+          alt='Financial Management'
+          className='my-10 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300'
+        />
+      </motion.div>
     </div>
   )
 }
