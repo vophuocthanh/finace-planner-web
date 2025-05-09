@@ -35,3 +35,7 @@ export const setUserToLS = (user: { id: string; name: string; email: string; rol
 }
 
 export const checkToken = getAccessTokenFromLS()
+
+export const removeRefreshTokenFromLS = () => {
+  localStorage.removeItem('refresh_token')
+}
