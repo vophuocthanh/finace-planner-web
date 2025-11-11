@@ -1,4 +1,6 @@
-import config from '@/configs'
+import axios, { HttpStatusCode } from 'axios'
+
+import { authApi } from '@/core/services/auth.service'
 import {
   getAccessTokenFromLS,
   getRefreshTokenFromLS,
@@ -6,9 +8,16 @@ import {
   removeRefreshTokenFromLS,
   setAccessTokenToLS
 } from '@/core/shared/storage'
-import { authApi } from '@/core/services/auth.service'
-import axios, { HttpStatusCode } from 'axios'
+import config from '@/configs'
 import { isEqual } from 'lodash'
+
+export const AUTH_ENDPOINTS = [
+  '/auth/login',
+  '/auth/register',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify-email'
+]
 
 const controllers = new Map<string, AbortController>()
 let isRefreshing = false
@@ -71,7 +80,18 @@ axiosClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
 
-    if (error.response && isEqual(error.response.status, HttpStatusCode.Unauthorized) && !originalRequest._retry) {
+    // Check if the request is an auth request (login, register...)
+    const isAuthRequest = AUTH_ENDPOINTS.some(
+      (endpoint) => originalRequest.url && originalRequest.url.includes(endpoint)
+    )
+
+    // Only refresh token if it's not an auth request
+    if (
+      error.response &&
+      isEqual(error.response.status, HttpStatusCode.Unauthorized) &&
+      !originalRequest._retry &&
+      !isAuthRequest
+    ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
@@ -91,7 +111,10 @@ axiosClient.interceptors.response.use(
       try {
         const refresh_token = getRefreshTokenFromLS()
         if (!refresh_token) {
-          throw new Error('No refresh token found')
+          removeAccessTokenFromLS()
+          removeRefreshTokenFromLS()
+          processQueue(new Error('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại'), null)
+          return Promise.reject(error)
         }
 
         const { access_token } = await authApi.refreshToken(refresh_token)
@@ -103,7 +126,7 @@ axiosClient.interceptors.response.use(
         processQueue(refreshError, null)
         removeAccessTokenFromLS()
         removeRefreshTokenFromLS()
-        return Promise.reject(refreshError)
+        return Promise.reject(error)
       } finally {
         isRefreshing = false
       }
