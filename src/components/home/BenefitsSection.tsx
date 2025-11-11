@@ -12,37 +12,43 @@ const benefits: Benefit[] = [
   {
     icon: Wallet,
     title: 'Web3 Wallet Integration',
-    description: 'Connect your MetaMask, WalletConnect, or any Web3 wallet seamlessly. Manage all your crypto assets in one secure place.',
+    description:
+      'Connect your MetaMask, WalletConnect, or any Web3 wallet seamlessly. Manage all your crypto assets in one secure place.',
     gradient: 'from-cyan-500 to-blue-500'
   },
   {
     icon: Lock,
     title: 'Decentralized & Secure',
-    description: 'Your data is stored on the blockchain with cryptographic security. No central authority, no single point of failure.',
+    description:
+      'Your data is stored on the blockchain with cryptographic security. No central authority, no single point of failure.',
     gradient: 'from-blue-500 to-indigo-500'
   },
   {
     icon: Network,
     title: 'Multi-Chain Support',
-    description: 'Deploy and interact with smart contracts across Ethereum, Polygon, BSC, and other leading blockchain networks.',
+    description:
+      'Deploy and interact with smart contracts across Ethereum, Polygon, BSC, and other leading blockchain networks.',
     gradient: 'from-purple-500 to-pink-500'
   },
   {
     icon: Zap,
     title: 'Smart Contracts',
-    description: 'Automate transactions and agreements with self-executing smart contracts. Trustless, transparent, and immutable.',
+    description:
+      'Automate transactions and agreements with self-executing smart contracts. Trustless, transparent, and immutable.',
     gradient: 'from-cyan-400 to-teal-500'
   },
   {
     icon: Coins,
     title: 'DeFi Protocols',
-    description: 'Access decentralized finance protocols for lending, borrowing, staking, and yield farming directly from the platform.',
+    description:
+      'Access decentralized finance protocols for lending, borrowing, staking, and yield farming directly from the platform.',
     gradient: 'from-indigo-500 to-purple-500'
   },
   {
     icon: ShieldCheck,
     title: 'NFT Marketplace',
-    description: 'Create, buy, and sell NFTs with ease. Full support for ERC-721 and ERC-1155 standards with gas optimization.',
+    description:
+      'Create, buy, and sell NFTs with ease. Full support for ERC-721 and ERC-1155 standards with gas optimization.',
     gradient: 'from-pink-500 to-rose-500'
   }
 ]
@@ -80,9 +86,7 @@ export const BenefitsSection = () => {
           transition={{ duration: 0.6 }}
           className='mb-16 text-center'
         >
-          <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>
-            Built for the Web3 Ecosystem
-          </h2>
+          <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>Built for the Web3 Ecosystem</h2>
           <p className='max-w-2xl mx-auto text-lg text-gray-300'>
             Comprehensive tools and features to build, deploy, and manage your decentralized applications
           </p>
@@ -131,4 +135,3 @@ export const BenefitsSection = () => {
     </section>
   )
 }
-

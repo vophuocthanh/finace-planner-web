@@ -75,7 +75,7 @@ const useCountUp = (end: number, duration: number = 2, isInView: boolean) => {
 const StatCard = ({ stat, index }: { stat: StatItem; index: number }) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
-  
+
   const numericValue = parseFloat(stat.value.replace(/[^0-9.]/g, ''))
   const count = useCountUp(numericValue, 2, isInView)
 
@@ -96,7 +96,9 @@ const StatCard = ({ stat, index }: { stat: StatItem; index: number }) => {
 
       {/* Icon */}
       <div className='relative mb-6'>
-        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.color} shadow-lg`}>
+        <div
+          className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.color} shadow-lg`}
+        >
           <stat.icon size={28} className='text-white' />
         </div>
       </div>
@@ -135,9 +137,7 @@ export const StatisticsSection = () => {
           transition={{ duration: 0.6 }}
           className='mb-16 text-center'
         >
-          <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>
-            Powering the Decentralized Economy
-          </h2>
+          <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>Powering the Decentralized Economy</h2>
           <p className='max-w-2xl mx-auto text-lg text-gray-300'>
             Join the revolution of builders, creators, and innovators shaping the future of Web3
           </p>
@@ -152,4 +152,3 @@ export const StatisticsSection = () => {
     </section>
   )
 }
-
