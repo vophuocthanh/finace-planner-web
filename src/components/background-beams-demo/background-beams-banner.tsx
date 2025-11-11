@@ -1,6 +1,6 @@
 import { backgroundBanner } from '@/assets/images'
 import { Button } from '@/components/ui/button'
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { BackgroundBeams } from '../ui/background-beams'
 import { partnerLogos } from '@/_mock/data-partner-logo.mock'
@@ -11,7 +11,7 @@ export interface PartnerLogo {
   alt: string
 }
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -21,7 +21,7 @@ const containerVariants = {
   }
 }
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -32,10 +32,10 @@ const itemVariants = {
 
 export function BackgroundBeamsBanner() {
   return (
-    <div className='relative w-full min-h-screen overflow-hidden'>
+    <div className='overflow-hidden relative w-full min-h-screen'>
       <div className='absolute inset-0 z-0 bg-white' />
       <div className='relative z-10 px-4 pt-32 pb-20 mx-auto max-w-7xl sm:px-6 lg:px-8'>
-        <div className='grid items-center grid-cols-1 gap-12 lg:grid-cols-2'>
+        <div className='grid grid-cols-1 gap-12 items-center lg:grid-cols-2'>
           <motion.div
             initial='hidden'
             animate='visible'
@@ -44,7 +44,7 @@ export function BackgroundBeamsBanner() {
           >
             <motion.h1
               variants={itemVariants}
-              className='text-4xl font-bold text-transparent md:text-6xl lg:text-7xl bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-600'
+              className='text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b md:text-6xl lg:text-7xl from-neutral-200 to-neutral-600'
             >
               Financial infrastructure for the internet
             </motion.h1>
@@ -56,7 +56,7 @@ export function BackgroundBeamsBanner() {
 
             <motion.div variants={itemVariants} className='flex flex-wrap gap-4'>
               <Button
-                className='flex items-center gap-2 px-6 py-6 text-white transition-all duration-300 rounded-full bg-primary hover:shadow-lg'
+                className='flex gap-2 items-center px-6 py-6 text-white rounded-full transition-all duration-300 bg-primary hover:shadow-lg'
                 onClick={() => {}}
               >
                 <span>Start with Payments</span>
@@ -79,7 +79,7 @@ export function BackgroundBeamsBanner() {
 
               <div className='grid grid-cols-2 gap-8 sm:grid-cols-4'>
                 {partnerLogos.map((logo) => (
-                  <motion.div key={logo.id} whileHover={{ scale: 1.05 }} className='flex items-center justify-center'>
+                  <motion.div key={logo.id} whileHover={{ scale: 1.05 }} className='flex justify-center items-center'>
                     <img src={logo.img} alt={logo.alt} className='w-auto max-h-10' />
                   </motion.div>
                 ))}

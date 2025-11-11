@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { Wallet, Lock, Network, Coins, Zap, ShieldCheck } from 'lucide-react'
 
 interface Benefit {
@@ -53,7 +53,7 @@ const benefits: Benefit[] = [
   }
 ]
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -63,21 +63,21 @@ const containerVariants = {
   }
 }
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.6,
-      ease: [0.25, 0.25, 0, 1]
+      ease: [0.25, 0.25, 0, 1] as const
     }
   }
 }
 
 export const BenefitsSection = () => {
   return (
-    <section className='relative w-full py-20 overflow-hidden bg-gradient-to-b from-gray-950 to-indigo-950/50 md:py-32'>
+    <section className='overflow-hidden relative py-20 w-full bg-gradient-to-b from-gray-950 to-indigo-950/50 md:py-32'>
       <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -87,7 +87,7 @@ export const BenefitsSection = () => {
           className='mb-16 text-center'
         >
           <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>Built for the Web3 Ecosystem</h2>
-          <p className='max-w-2xl mx-auto text-lg text-gray-300'>
+          <p className='mx-auto max-w-2xl text-lg text-gray-300'>
             Comprehensive tools and features to build, deploy, and manage your decentralized applications
           </p>
         </motion.div>
@@ -104,7 +104,7 @@ export const BenefitsSection = () => {
               key={index}
               variants={itemVariants}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              className='relative p-8 bg-gradient-to-br from-gray-900/90 to-gray-800/90 rounded-2xl border border-cyan-500/30 shadow-sm hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 group overflow-hidden backdrop-blur-sm'
+              className='overflow-hidden relative p-8 bg-gradient-to-br rounded-2xl border shadow-sm backdrop-blur-sm transition-all duration-300 from-gray-900/90 to-gray-800/90 border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/20 group'
             >
               {/* Gradient Background on Hover */}
               <div
@@ -123,11 +123,11 @@ export const BenefitsSection = () => {
               {/* Content */}
               <div className='relative'>
                 <h3 className='mb-3 text-xl font-semibold text-white'>{benefit.title}</h3>
-                <p className='text-gray-300 leading-relaxed'>{benefit.description}</p>
+                <p className='leading-relaxed text-gray-300'>{benefit.description}</p>
               </div>
 
               {/* Decorative Element */}
-              <div className='absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-br from-cyan-500/10 to-transparent rounded-full -mr-12 -mb-12 opacity-50' />
+              <div className='absolute right-0 bottom-0 -mr-12 -mb-12 w-24 h-24 bg-gradient-to-br to-transparent rounded-full opacity-50 from-cyan-500/10' />
             </motion.div>
           ))}
         </motion.div>

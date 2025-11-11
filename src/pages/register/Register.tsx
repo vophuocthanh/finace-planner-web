@@ -14,13 +14,13 @@ import { authApi } from '@/core/services/auth.service'
 import { RegisterSchema } from '@/core/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -30,7 +30,7 @@ const containerVariants = {
   }
 }
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -85,12 +85,12 @@ export default function Register() {
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1 }}
-        className='items-center justify-center hidden w-full md:flex'
+        className='hidden justify-center items-center w-full md:flex'
       >
         <img
           src='https://img.freepik.com/free-vector/personal-finance-concept-illustration_114360-7720.jpg'
           alt='Personal Finance'
-          className='my-10 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300 ml-44'
+          className='my-10 ml-44 rounded-lg shadow-2xl transition-transform duration-300 transform hover:scale-105'
         />
       </motion.div>
       <div className='flex items-center justify-center w-full mx-auto my-auto md:justify-between md:max-w-[90rem] md:ml-80 md:mr-[8rem]'>
@@ -98,24 +98,24 @@ export default function Register() {
           initial='hidden'
           animate='visible'
           variants={containerVariants}
-          className='flex flex-col items-center w-full space-y-2 md:items-start'
+          className='flex flex-col items-center space-y-2 w-full md:items-start'
         >
-          <motion.div variants={itemVariants} className='w-40 mb-10'>
+          <motion.div variants={itemVariants} className='mb-10 w-40'>
             <Link to='/'>
               <img src={logo} alt='logo' className='object-cover w-full h-full' />
             </Link>
           </motion.div>
           <motion.h1
             variants={itemVariants}
-            className='text-5xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent'
+            className='text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600'
           >
             Create Account
           </motion.h1>
-          <motion.p variants={itemVariants} className='text-sm text-gray-600 text-center md:text-left px-10 md:px-0'>
+          <motion.p variants={itemVariants} className='px-10 text-sm text-center text-gray-600 md:text-left md:px-0'>
             Let's get you all set up so you can access your personal account.
           </motion.p>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleRegister)} className='w-10/12 space-y-6 md:w-2/3'>
+            <form onSubmit={form.handleSubmit(handleRegister)} className='space-y-6 w-10/12 md:w-2/3'>
               <motion.div variants={itemVariants}>
                 <FormField
                   control={form.control}
@@ -136,7 +136,7 @@ export default function Register() {
                   )}
                 />
               </motion.div>
-              <motion.div variants={itemVariants} className='flex flex-col w-full gap-6 md:flex-row'>
+              <motion.div variants={itemVariants} className='flex flex-col gap-6 w-full md:flex-row'>
                 <FormField
                   control={form.control}
                   name='name'
@@ -218,10 +218,10 @@ export default function Register() {
                 />
               </motion.div>
               <motion.div variants={itemVariants} className='flex justify-between'>
-                <div className='flex items-center justify-center space-x-2'>
+                <div className='flex justify-center items-center space-x-2'>
                   <Checkbox
                     id='terms'
-                    className='w-4 h-4 transition-colors duration-300 border-gray-300 rounded focus:ring-indigo-500'
+                    className='w-4 h-4 rounded border-gray-300 transition-colors duration-300 focus:ring-indigo-500'
                   />
                   <Label htmlFor='terms' className='text-base font-normal text-gray-600 cursor-pointer'>
                     I agree to all the <span className='text-indigo-600'>Terms</span> and{' '}
@@ -232,17 +232,17 @@ export default function Register() {
               <motion.div variants={itemVariants}>
                 <Button
                   loading={isLoading}
-                  className='w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl'
+                  className='w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg transition-all duration-300 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl'
                   type='submit'
                 >
                   Create Account
                 </Button>
               </motion.div>
-              <motion.p variants={itemVariants} className='flex items-center justify-center text-gray-600'>
+              <motion.p variants={itemVariants} className='flex justify-center items-center text-gray-600'>
                 Already have an account?&nbsp;
                 <Link
                   to={path.login}
-                  className='text-indigo-600 hover:text-indigo-700 hover:underline transition-colors duration-300'
+                  className='text-indigo-600 transition-colors duration-300 hover:underline hover:text-indigo-700'
                 >
                   Sign in
                 </Link>
