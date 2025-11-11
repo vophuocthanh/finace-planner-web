@@ -1,4 +1,4 @@
-import { FacebookIcons1, GoogleIcons, IconEye, IconNonEye } from '@/assets/icons'
+import { IconEye, IconNonEye } from '@/assets/icons'
 import { logo } from '@/assets/images'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -103,14 +103,14 @@ export default function Login() {
           variants={containerVariants}
           className='flex flex-col justify-center items-center md:items-start w-full md:ml-32 space-y-2 mt-[4rem]'
         >
-          <motion.div variants={itemVariants} className='w-40 mb-10'>
+          <motion.div variants={itemVariants} className='mb-10 w-40'>
             <Link to='/'>
               <img src={logo} alt='logo' className='object-cover w-full h-full' />
             </Link>
           </motion.div>
           <motion.h1
             variants={itemVariants}
-            className='text-5xl font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent'
+            className='text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600'
           >
             Welcome Back
           </motion.h1>
@@ -118,7 +118,7 @@ export default function Login() {
             Login to access your account
           </motion.p>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='w-10/12 space-y-6 md:w-2/3'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 w-10/12 md:w-2/3'>
               <motion.div variants={itemVariants}>
                 <FormField
                   control={form.control}
@@ -162,10 +162,10 @@ export default function Login() {
                 />
               </motion.div>
               <motion.div variants={itemVariants} className='flex justify-between'>
-                <div className='flex items-center justify-center space-x-2'>
+                <div className='flex justify-center items-center space-x-2'>
                   <Checkbox
                     id='terms'
-                    className='w-4 h-4 transition-colors duration-300 border-gray-300 rounded focus:ring-indigo-500'
+                    className='w-4 h-4 rounded border-gray-300 transition-colors duration-300 focus:ring-indigo-500'
                     onChange={(e) => handleChangeRememberMe((e.target as HTMLInputElement).checked)}
                     checked={rememberMe}
                   />
@@ -175,7 +175,7 @@ export default function Login() {
                 </div>
                 <Link
                   to={path.forgotPassword}
-                  className='text-indigo-600 hover:text-indigo-700 hover:underline transition-colors duration-300'
+                  className='text-indigo-600 transition-colors duration-300 hover:text-indigo-700 hover:underline'
                 >
                   Forgot Password?
                 </Link>
@@ -184,35 +184,18 @@ export default function Login() {
               <motion.div variants={itemVariants}>
                 <Button
                   loading={isLoading}
-                  className='w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl'
+                  className='w-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg transition-all duration-300 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl'
                   type='submit'
                 >
                   Sign In
                 </Button>
               </motion.div>
 
-              <motion.div variants={itemVariants} className='flex items-center'>
-                <div className='flex-1 border-t border-gray-300'></div>
-                <span className='px-3 font-medium text-gray-500'>or</span>
-                <div className='flex-1 border-t border-gray-300'></div>
-              </motion.div>
-
-              <motion.div variants={itemVariants} className='space-y-3'>
-                <Button className='w-full text-gray-700 bg-white hover:bg-gray-50 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200'>
-                  <img src={GoogleIcons} alt='Google' className='w-6 h-6 mr-2' />
-                  Continue with Google
-                </Button>
-                <Button className='w-full text-gray-700 bg-white hover:bg-gray-50 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-200'>
-                  <img src={FacebookIcons1} alt='Facebook' className='w-6 h-6 mr-2' />
-                  Continue with Facebook
-                </Button>
-              </motion.div>
-
-              <motion.p variants={itemVariants} className='flex items-center justify-center text-gray-600'>
+              <motion.p variants={itemVariants} className='flex justify-center items-center text-gray-600'>
                 Don't have an account?&nbsp;
                 <Link
                   to='/register'
-                  className='text-indigo-600 hover:text-indigo-700 hover:underline transition-colors duration-300'
+                  className='text-indigo-600 transition-colors duration-300 hover:text-indigo-700 hover:underline'
                 >
                   Sign up
                 </Link>
@@ -230,7 +213,7 @@ export default function Login() {
         <img
           src='https://img.freepik.com/free-vector/finance-management-concept-illustration_114360-1233.jpg'
           alt='Financial Management'
-          className='my-10 rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300'
+          className='my-10 rounded-lg shadow-2xl transition-transform duration-300 transform hover:scale-105'
         />
       </motion.div>
     </div>

@@ -26,7 +26,7 @@ const itemVariants = {
 
 export function TestimonialsSection() {
   return (
-    <section className='py-20 overflow-hidden bg-white'>
+    <section className='py-20 overflow-hidden bg-gradient-to-b from-indigo-950/50 via-gray-950 to-gray-950 md:py-32'>
       <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,9 +35,9 @@ export function TestimonialsSection() {
           transition={{ duration: 0.6 }}
           className='mb-16 text-center'
         >
-          <h2 className='mb-4 text-3xl font-bold md:text-5xl'>What our customers say</h2>
-          <p className='max-w-2xl mx-auto text-lg text-neutral-500'>
-            Join thousands of satisfied users who have transformed their financial management
+          <h2 className='mb-4 text-3xl font-bold text-white md:text-5xl'>What Web3 Builders Say</h2>
+          <p className='max-w-2xl mx-auto text-lg text-gray-300'>
+            Join thousands of developers and creators building the decentralized future
           </p>
         </motion.div>
 
@@ -54,9 +54,9 @@ export function TestimonialsSection() {
               variants={itemVariants}
               custom={idx}
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className='relative p-8 border shadow-lg bg-white/10 backdrop-blur-sm rounded-2xl border-white/10'
+              className='relative p-8 border shadow-lg bg-gradient-to-br from-gray-900/90 to-gray-800/90 backdrop-blur-sm rounded-2xl border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-300'
             >
-              <div className='absolute flex items-center justify-center w-12 h-12 text-white rounded-full -top-3 -left-3 bg-primary'>
+              <div className='absolute flex items-center justify-center w-12 h-12 text-white rounded-full -top-3 -left-3 bg-gradient-to-br from-cyan-500 to-blue-500 shadow-lg'>
                 <Quote size={20} />
               </div>
 
@@ -65,16 +65,16 @@ export function TestimonialsSection() {
                   <Star
                     key={i}
                     size={16}
-                    className={i < testimonial.rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300'}
+                    className={i < testimonial.rating ? 'fill-cyan-400 text-cyan-400' : 'text-gray-600'}
                   />
                 ))}
               </div>
 
-              <p className='mb-6 italic text-neutral-700 dark:text-neutral-300'>"{testimonial.content}"</p>
+              <p className='mb-6 italic text-gray-300'>"{testimonial.content}"</p>
 
               <div className='mt-auto'>
-                <h4 className='font-semibold text-black dark:text-white'>{testimonial.name}</h4>
-                <p className='text-sm text-neutral-500'>
+                <h4 className='font-semibold text-white'>{testimonial.name}</h4>
+                <p className='text-sm text-gray-400'>
                   {testimonial.role}, {testimonial.company}
                 </p>
               </div>
@@ -89,7 +89,7 @@ export function TestimonialsSection() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className='flex justify-center mt-16'
         >
-          <button className='px-6 py-3 font-medium text-white transition-all duration-300 rounded-full bg-primary hover:shadow-lg'>
+          <button className='px-6 py-3 font-medium text-gray-950 transition-all duration-300 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 hover:shadow-lg hover:shadow-cyan-500/50'>
             Read more success stories
           </button>
         </motion.div>

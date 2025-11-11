@@ -26,7 +26,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className='pt-16 pb-8 bg-white border-t border-gray-100'>
+    <footer className='pt-16 pb-8 bg-gradient-to-b to-black border-t from-gray-950 border-cyan-500/20'>
       <div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
         <motion.div
           initial='hidden'
@@ -36,9 +36,10 @@ export default function Footer() {
           className='grid grid-cols-1 gap-8 pb-12 md:grid-cols-4'
         >
           <motion.div variants={itemVariants} className='col-span-1'>
-            <h3 className='mb-4 text-lg font-semibold text-black dark:text-white'>Cobalt Finance</h3>
-            <p className='max-w-xs mb-6 text-sm text-neutral-500'>
-              Modern financial tools for individuals and businesses to track, manage, and grow their finances.
+            <h3 className='mb-4 text-lg font-semibold text-white'>Web3 Platform</h3>
+            <p className='mb-6 max-w-xs text-sm text-gray-400'>
+              Building the decentralized future. Deploy smart contracts, manage crypto assets, and interact with DeFi
+              protocols.
             </p>
 
             <div className='flex space-x-4'>
@@ -51,7 +52,7 @@ export default function Footer() {
                   rel='noopener noreferrer'
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
-                  className='flex items-center justify-center w-8 h-8 transition-colors rounded-full bg-white/10 hover:bg-primary/20'
+                  className='flex justify-center items-center w-8 h-8 rounded-full border transition-colors bg-white/10 border-cyan-500/20 hover:bg-cyan-500/20 hover:border-cyan-400/40'
                 >
                   <img src={social.icon} alt={social.label} className='w-4 h-4' />
                 </motion.a>
@@ -61,13 +62,13 @@ export default function Footer() {
 
           {dataFooterLink.map((group) => (
             <motion.div key={group.title} variants={itemVariants} className='col-span-1'>
-              <h3 className='mb-4 text-sm font-semibold text-black dark:text-white'>{group.title}</h3>
+              <h3 className='mb-4 text-sm font-semibold text-white'>{group.title}</h3>
               <ul className='space-y-3'>
                 {group.links.map((link, linkIdx) => (
                   <li key={linkIdx}>
                     <Link
                       to={link.href}
-                      className='text-sm transition-colors duration-200 text-neutral-500 hover:text-primary'
+                      className='text-sm text-gray-400 transition-colors duration-200 hover:text-cyan-400'
                     >
                       {link.label}
                     </Link>
@@ -78,7 +79,7 @@ export default function Footer() {
           ))}
         </motion.div>
 
-        <div className='w-full h-px my-8 bg-neutral-200/20' />
+        <div className='my-8 w-full h-px bg-gradient-to-r from-transparent to-transparent via-cyan-500/30' />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -87,29 +88,28 @@ export default function Footer() {
           transition={{ duration: 0.5 }}
           className='flex flex-col space-y-6'
         >
-          <div className='flex flex-wrap justify-between gap-4'>
-            <span className='text-xs text-neutral-500'>© {currentYear} Cobalt Financial Technologies Inc.</span>
+          <div className='flex flex-wrap gap-4 justify-between'>
+            <span className='text-xs text-gray-400'>© {currentYear} Web3 Platform. All rights reserved.</span>
             <div className='flex flex-wrap gap-6'>
-              <Link to='/' className='text-xs text-neutral-500 hover:text-primary'>
+              <Link to='/' className='text-xs text-gray-400 transition-colors hover:text-cyan-400'>
                 Privacy Policy
               </Link>
-              <Link to='/' className='text-xs text-neutral-500 hover:text-primary'>
+              <Link to='/' className='text-xs text-gray-400 transition-colors hover:text-cyan-400'>
                 Terms of Use
               </Link>
-              <Link to='/' className='text-xs text-neutral-500 hover:text-primary'>
+              <Link to='/' className='text-xs text-gray-400 transition-colors hover:text-cyan-400'>
                 Cookies
               </Link>
             </div>
           </div>
 
           <div className='space-y-3'>
-            <p className='text-xs text-neutral-500'>
-              Cobalt is a trademark or registered trademark of Cobalt Financial Technologies Inc. Any other trademarks
-              are the property of their respective owners.
+            <p className='text-xs text-gray-500'>
+              Built on blockchain technology. Decentralized, permissionless, and open source.
             </p>
-            <p className='text-xs text-neutral-500'>
-              Cobalt is a financial technology company, not a bank. Banking services are provided by Celtic Bank and
-              Evolve Bank & Trust®, Members FDIC.
+            <p className='text-xs text-gray-500'>
+              This platform is not a financial institution. Always do your own research (DYOR) before making any
+              financial decisions.
             </p>
           </div>
         </motion.div>

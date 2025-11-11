@@ -48,10 +48,21 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, loading, asChild = false, iconLeft, iconRight, children, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button'
+
+    // When asChild is true, we can't add extra elements (iconLeft, iconRight, loading)
+    // because Slot expects only one child
+    if (asChild) {
+      return (
+        <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+          {children}
+        </Comp>
+      )
+    }
+
     return (
       <Comp disabled={loading} className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
         {iconLeft && <span className='mr-2'>{iconLeft}</span>}
-        {loading && <Loader2 className='w-4 h-4 mr-2 animate-spin' />}
+        {loading && <Loader2 className='mr-2 w-4 h-4 animate-spin' />}
         {children}
         {iconRight && <span className='ml-2'>{iconRight}</span>}
       </Comp>
