@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 export const useMonthly = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: mutationKeys.getMonthly,
-    queryFn: () => monthlyService.getMonthly({ items_per_page: 100 }),
+    queryFn: () => monthlyService.getMonthly({ itemsPerPage: 100 }),
     enabled: options?.enabled ?? true
   })
 }

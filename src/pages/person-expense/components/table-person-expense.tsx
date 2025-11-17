@@ -26,13 +26,13 @@ import {
   ColumnDef,
   ColumnFiltersState,
   OnChangeFn,
+  PaginationState,
   RowSelectionState,
   SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
@@ -47,6 +47,10 @@ export default function TablePersonExpense() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10
+  })
   const [filterValue, setFilterValue] = useState<string>('')
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false)
   const [editData, setEditData] = useState<PersonIncomeResponse | undefined>(undefined)
@@ -54,7 +58,7 @@ export default function TablePersonExpense() {
   const [deleteId, setDeleteId] = useState<string | undefined>(undefined)
 
   const { mutate: deleteExpense } = useDeleteExpenseMutation(deleteId ?? '')
-  const { data: expense, isLoading, error } = useExpenseQuery()
+  const { data: expense, total, isLoading, error } = useExpenseQuery(pagination.pageIndex + 1, pagination.pageSize)
 
   const handleOpenDeleteModal = useCallback((open: boolean, id?: string) => {
     setIsDeleteModalOpen(open)
@@ -161,7 +165,7 @@ export default function TablePersonExpense() {
       cell: memo(
         ({ row }) => {
           const category = row.getValue('category') as CategoryPersonIncomeResponse
-          return <div className='w-72 md:w-40 font-medium'>{category?.name}</div>
+          return <div className='w-72 font-medium md:w-40'>{category?.name}</div>
         },
         (prev, next) => isEqual(prev.row.getValue('category'), next.row.getValue('category'))
       )
@@ -173,7 +177,7 @@ export default function TablePersonExpense() {
         ({ row }) => {
           const monthly = row.getValue('monthly') as MonthlyPersonIncomeResponse
           return (
-            <div className='font-medium w-36'>
+            <div className='w-36 font-medium'>
               {monthly?.nameMonth} - {monthly?.yearly?.year}
             </div>
           )
@@ -189,7 +193,7 @@ export default function TablePersonExpense() {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='w-8 h-8 p-0'>
+              <Button variant='ghost' className='p-0 w-8 h-8'>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
@@ -205,23 +209,27 @@ export default function TablePersonExpense() {
 
   const data = useMemo(() => expense ?? [], [expense])
   const memoizedColumns = useMemo(() => columns, [columns])
+  const pageCount = useMemo(() => Math.ceil(total / pagination.pageSize), [total, pagination.pageSize])
 
   const table = useReactTable({
     data,
     columns: memoizedColumns,
+    pageCount,
+    manualPagination: true,
     onSortingChange: setSorting as OnChangeFn<SortingState>,
     onColumnFiltersChange: setColumnFilters as OnChangeFn<ColumnFiltersState>,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility as OnChangeFn<VisibilityState>,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination as OnChangeFn<PaginationState>,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection
+      rowSelection,
+      pagination
     }
   })
 
@@ -233,7 +241,7 @@ export default function TablePersonExpense() {
   return (
     <div className='w-full md:h-[calc(100vh-104px)] p-4 bg-white rounded-md shadow-md'>
       <h1 className='text-2xl font-bold'>Chi tiêu cá nhân</h1>
-      <div className='flex flex-col items-center gap-2 py-4 md:justify-between md:flex-row'>
+      <div className='flex flex-col gap-2 items-center py-4 md:justify-between md:flex-row'>
         <Input
           placeholder='Tìm kiếm theo mô tả...'
           value={filterValue}
@@ -243,7 +251,7 @@ export default function TablePersonExpense() {
           }}
           className='w-[22rem] md:max-w-sm'
         />
-        <div className='flex items-center gap-12 md:gap-4'>
+        <div className='flex gap-12 items-center md:gap-4'>
           <Button
             iconLeft={<Plus />}
             onClick={() => setIsAddModalOpen(true)}
@@ -279,7 +287,7 @@ export default function TablePersonExpense() {
       {isLoading ? (
         <LoadingCM />
       ) : (
-        <div className='border rounded-md'>
+        <div className='rounded-md border'>
           {data === undefined ? (
             <EmptyDocuments isNewVersion />
           ) : (
@@ -316,22 +324,25 @@ export default function TablePersonExpense() {
           )}
         </div>
       )}
-      <div className='flex items-center justify-end p-4 pt-4 space-x-2 bg-white md:fixed md:bottom-6 md:right-6'>
+      <div className='flex justify-end items-center p-4 pt-4 space-x-2 bg-white md:fixed md:bottom-6 md:right-6'>
         <div className='flex-1 text-sm text-muted-foreground'>
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+          Hiển thị {pagination.pageIndex * pagination.pageSize + 1} -{' '}
+          {Math.min((pagination.pageIndex + 1) * pagination.pageSize, total)} của {total} kết quả
         </div>
-        <div className='space-x-2'>
+        <div className='flex items-center space-x-2'>
+          <span className='text-sm text-muted-foreground'>
+            Trang {pagination.pageIndex + 1} / {pageCount}
+          </span>
           <Button
             variant='outline'
             size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Trước
           </Button>
           <Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Next
+            Sau
           </Button>
         </div>
       </div>

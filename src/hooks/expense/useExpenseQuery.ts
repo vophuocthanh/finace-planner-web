@@ -8,15 +8,25 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 const token = getAccessTokenFromLS()
 
-export const useExpenseQuery = () => {
+export const useExpenseQuery = (page?: number, itemsPerPage?: number) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: mutationKeys.getExpenses,
-    queryFn: () => expenseApi.getExpenses(),
-    select: (data) => data.data,
+    queryKey: [mutationKeys.getExpenses, page, itemsPerPage],
+    queryFn: () =>
+      expenseApi.getExpenses({
+        page: page ?? 1,
+        itemsPerPage: itemsPerPage ?? 10
+      }),
     enabled: !!token
   })
 
-  return { data, isLoading, error }
+  return {
+    data: data?.data ?? [],
+    total: data?.total ?? 0,
+    currentPage: data?.page ?? 1,
+    itemsPerPage: data?.itemsPerPage ?? 10,
+    isLoading,
+    error
+  }
 }
 
 export const useExpenseByIdQuery = (id: string) => {
