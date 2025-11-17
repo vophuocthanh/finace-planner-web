@@ -4,14 +4,14 @@ import { ChartDashboard } from './components/chart-dashboard'
 import { BarChartDashboard } from '@/pages/dashboard/components/bar-chart-dashboard'
 import { useGetTotalExpensesByMonthQuery } from '@/hooks/expense/useExpenseQuery'
 import { useMonthly } from '@/hooks/monthy/useMonthyQuery'
-import { Select, Spin } from 'antd'
+import { Select, Skeleton, Spin } from 'antd'
 import { formatMoney } from '@/core/helpers/calculator'
 
 export default function Dashboard() {
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false)
   const { data: monthly, isLoading: isLoadingMonthly } = useMonthly({ enabled: isSelectOpen })
   const [selectedMonthId, setSelectedMonthId] = useState<string>('')
-  const { data: totalExpenses } = useGetTotalExpensesByMonthQuery(selectedMonthId)
+  const { data: totalExpenses, isLoading: isLoadingTotalExpenses } = useGetTotalExpensesByMonthQuery(selectedMonthId)
 
   const handleMonthChange = (value: string) => setSelectedMonthId(value)
 
@@ -46,9 +46,18 @@ export default function Dashboard() {
         })}
       </Select>
       <span className='flex my-4 text-2xl font-bold text-white'>
-        {selectedMonthId
-          ? `Tổng chi tiêu tháng này: ${formatMoney(totalExpenses?.data?.total)} VND`
-          : 'Vui lòng chọn tháng để xem tổng chi tiêu'}
+        {selectedMonthId ? (
+          <>
+            Tổng chi tiêu tháng này:{' '}
+            {isLoadingTotalExpenses ? (
+              <Skeleton.Input active size='small' style={{ width: 120 }} className='mt-1 ml-2' />
+            ) : (
+              `${formatMoney(totalExpenses?.data?.total)} VND`
+            )}
+          </>
+        ) : (
+          'Vui lòng chọn tháng để xem tổng chi tiêu'
+        )}
       </span>
       <ChartDashboard />
       <div className='flex flex-col gap-4 mt-4 md:mt-6 md:flex-row'>
