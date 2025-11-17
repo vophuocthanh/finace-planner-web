@@ -19,7 +19,7 @@ const SidebarLink = ({ link, isActive, isCollapsed }: ISidebarLinkProps) => {
       to={link.path}
       className={classNames(
         'flex relative gap-4 items-center py-4 w-24 text-base font-medium rounded-xl transition-all duration-300 group md:w-full',
-        { 'justify-center px-0 w-full': isCollapsed, 'px-6 w-24': !isCollapsed },
+        { 'justify-center px-0 w-full': isCollapsed, 'px-4 w-24': !isCollapsed },
         {
           'text-cyan-400 bg-gradient-to-r border-l-4 border-cyan-400 from-cyan-500/20 to-blue-500/20': isActive,
           'text-gray-400 hover:text-cyan-400 hover:bg-gray-800/50': !isActive

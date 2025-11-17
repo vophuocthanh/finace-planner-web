@@ -75,3 +75,13 @@ export const useDeleteExpenseMutation = (id: string) => {
 
   return { mutate, isPending, error }
 }
+
+export const useGetTotalExpensesByMonthQuery = (monthlyId: string) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: [mutationKeys.getTotalExpensesByMonth as string, monthlyId],
+    queryFn: () => expenseApi.getTotalExpensesByMonth(monthlyId),
+    enabled: !!token && !!monthlyId
+  })
+
+  return { data, isLoading, error } as const
+}

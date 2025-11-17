@@ -16,6 +16,7 @@ export const mutationKeys = {
   // Expense
   getExpenses: ['getExpenses'],
   getExpenseById: ['getExpenseById'],
+  getTotalExpensesByMonth: 'getTotalExpensesByMonth',
   verifyEmail: ['verifyEmail'],
   resendCode: ['resendCode']
 }

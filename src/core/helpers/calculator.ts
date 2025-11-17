@@ -26,3 +26,9 @@ export const dividedWithFixed = (a: number, b: number) => {
 export const toFixedByCurrency = (value: number, currencyCode: string) => {
   return toFixedNumber(value, isEqual(currencyCode, VND_CURRENCY_UNIT) ? numberConstants.ZERO : undefined)
 }
+
+export const formatMoney = (value: number | null | undefined): string => {
+  if (isNil(value)) return '0'
+
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}

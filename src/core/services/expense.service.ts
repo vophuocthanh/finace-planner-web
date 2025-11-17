@@ -20,5 +20,8 @@ export const expenseApi = {
   },
   deleteExpense(id: string) {
     return axiosClient.delete(`${API_EXPENSE_URL}/${id}`)
+  },
+  getTotalExpensesByMonth(monthlyId: string) {
+    return axiosClient.get(`${API_EXPENSE_URL}/total-expenses-by-month?monthlyId=${monthlyId}`)
   }
 }
